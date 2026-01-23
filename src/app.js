@@ -8,6 +8,7 @@ const tenantsRoutes = require('./routes/tenants.routes');
 const usersRoutes = require('./routes/users.routes');
 const authRoutes = require('./routes/auth.routes');
 const publicRoutes = require('./routes/public.routes');
+const dashboardRoutes = require('./routes/dashboard.routes');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/tenants', tenantsRoutes);
 app.use('/users', usersRoutes);
 app.use('/auth', authRoutes);
 app.use('/public', publicRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 // Global error handler (must be last)
 app.use(errorMiddleware);

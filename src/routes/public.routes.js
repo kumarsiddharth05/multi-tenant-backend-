@@ -3,10 +3,10 @@ const publicController = require('../controllers/public.controller');
 
 const router = express.Router();
 
-// Matches /public/:tenantName/orders
-router.post('/:tenantName/orders', publicController.submitRequest);
+// Matches /public/:tenantKey/orders
+router.post('/:tenantKey/orders', publicController.submitRequest);
 
-// Matches /public/:tenantName/jobs
-router.post('/:tenantName/jobs', publicController.submitRequest);
+// Matches /public/:tenantKey/jobs
+router.post('/:tenantKey/jobs', publicController.submitRequest);
 
 module.exports = router;

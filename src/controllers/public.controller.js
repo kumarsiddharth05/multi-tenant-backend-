@@ -2,14 +2,14 @@ const publicService = require('../services/public.service');
 
 /**
  * Handle public request wrapper
- * Resolves tenant, validates type, calls appropriate creator
+ * Resolves tenant by key, validates type, calls appropriate creator
  */
 const submitRequest = async (req, res, next) => {
     try {
-        const { tenantName } = req.params;
+        const { tenantKey } = req.params;
 
         // 1. Resolve Tenant
-        const tenant = await publicService.getTenantByName(tenantName);
+        const tenant = await publicService.getTenantByKey(tenantKey);
 
         if (!tenant) {
             return res.status(404).json({

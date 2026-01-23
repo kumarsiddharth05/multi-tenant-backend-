@@ -1,13 +1,13 @@
 const db = require('../config/db');
 
 /**
- * Get tenant ID by name (slug)
- * @param {string} name - Tenant name
+ * Get tenant ID by key
+ * @param {string} key - Tenant key (unique)
  * @returns {Promise<object>} Tenant object (id, type)
  */
-const getTenantByName = async (name) => {
-    const sql = 'SELECT id, type FROM tenants WHERE name = $1';
-    const result = await db.query(sql, [name]);
+const getTenantByKey = async (key) => {
+    const sql = 'SELECT id, type FROM tenants WHERE tenant_key = $1';
+    const result = await db.query(sql, [key]);
     return result.rows[0];
 };
 
@@ -46,7 +46,7 @@ const createMechanicJob = async (tenantId, data) => {
 };
 
 module.exports = {
-    getTenantByName,
+    getTenantByKey,
     createRestaurantOrder,
     createMechanicJob,
 };
