@@ -30,6 +30,26 @@ $orderId = $dash.data[0].id
 $comp = Invoke-RestMethod -Method PATCH -Uri "http://localhost:3000/dashboard/orders/$orderId/complete" -Headers @{Authorization = "Bearer $token" }
 Write-Host "Marked Order $orderId as $($comp.status)"
 
+# Fetch Reports
+Write-Host "`n--- Testing Report Access (REST OWNER) ---"
+$reports = Invoke-RestMethod -Method GET -Uri "http://localhost:3000/dashboard/reports" -Headers @{Authorization = "Bearer $token" }
+$files = $reports.reports
+if ($files.Count -ge 0) {
+    Write-Host "SUCCESS: Listed $($files.Count) reports"
+    if ($files.Count -gt 0) {
+        $filename = $files[0].filename
+        Write-Host "Attempting download: $filename"
+        try {
+            Invoke-RestMethod -Method GET -Uri "http://localhost:3000/dashboard/reports/$filename" -Headers @{Authorization = "Bearer $token" } -OutFile "downloaded_report.pdf"
+            Write-Host "SUCCESS: Downloaded file"
+        }
+        catch {
+            Write-Host "FAIL: Download error - $($_.Exception.Message)"
+        }
+    }
+}
+else { Write-Host "FAIL: Report listing failed format" }
+
 Write-Host "`n3. Testing Mechanic Dashboard..."
 # Login as Mechanic Owner
 $login = Invoke-RestMethod -Method POST -Uri "http://localhost:3000/auth/login" -ContentType "application/json" -Body '{"email":"mech-owner@demo.com","password":"secret123"}'

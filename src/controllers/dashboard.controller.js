@@ -66,7 +66,59 @@ const completeService = async (req, res, next) => {
     }
 };
 
+/**
+ * GET /dashboard/reports
+ * List available reports
+ */
+const listReports = async (req, res, next) => {
+    try {
+        const { tenantId } = req.user;
+
+        // Resolve Tenant Key (for file cleanup/lookup)
+        const tenantKey = await dashboardService.getTenantKey(tenantId);
+        if (!tenantKey) {
+            return res.status(404).json({ error: { message: 'Tenant key not found', statusCode: 404 } });
+        }
+
+        const reports = dashboardService.listReports(tenantKey);
+
+        return res.status(200).json({ reports });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * GET /dashboard/reports/:filename
+ * Download a specific query
+ */
+const downloadReport = async (req, res, next) => {
+    try {
+        const { tenantId } = req.user;
+        const { filename } = req.params;
+
+        // Resolve Tenant Key
+        const tenantKey = await dashboardService.getTenantKey(tenantId);
+        if (!tenantKey) {
+            return res.status(404).json({ error: { message: 'Tenant key not found', statusCode: 404 } });
+        }
+
+        // Get Safe Path
+        const filePath = dashboardService.getReportPath(tenantKey, filename);
+
+        if (!filePath) {
+            return res.status(404).json({ error: { message: 'Report not found or access denied', statusCode: 404 } });
+        }
+
+        return res.download(filePath, filename);
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getDashboard,
     completeService,
+    listReports,
+    downloadReport
 };
