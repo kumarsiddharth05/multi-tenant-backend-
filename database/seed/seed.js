@@ -1,6 +1,7 @@
 /* eslint-disable */
 require('dotenv').config();
-const { pool } = require('../../backend/src/core/config/db');
+const path = require('path');
+const { pool } = require(path.join(__dirname, '../../backend/src/core/config/db'));
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 
@@ -8,19 +9,20 @@ async function seed() {
     try {
         console.log('--- Seeding V2 DB ---');
 
-        // Migrations
+        // Migrations (resolved relative to this script's location)
+        const migrationsDir = path.join(__dirname, '../migrations');
         const migrations = [
-            '../migrations/001_create_tenants.sql',
-            '../migrations/002_create_users.sql',
-            '../migrations/003_create_v2_schemas.sql',
-            '../migrations/004_add_tenant_key.sql',
-            '../migrations/005_add_indexes.sql',
-            '../migrations/006_create_menu_and_status.sql'
+            '001_create_tenants.sql',
+            '002_create_users.sql',
+            '003_create_v2_schemas.sql',
+            '004_add_tenant_key.sql',
+            '005_add_indexes.sql',
+            '006_create_menu_and_status.sql'
         ];
 
         for (const file of migrations) {
             try {
-                const sql = fs.readFileSync(file, 'utf8');
+                const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
                 await pool.query(sql);
                 console.log(`Applied ${file}`);
             } catch (e) {

@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: multi-tenant-backend
+    runtime: node
+    repo: https://github.com/kumarsiddharth05/multi-tenant-backend-
+    branch: master
+    rootDir: backend
+    buildCommand: npm install && npm run seed
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_USER
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        sync: false
+      - key: PORT
+        value: 10000
