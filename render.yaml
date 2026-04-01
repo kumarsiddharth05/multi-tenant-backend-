@@ -1,5 +1,6 @@
 services:
   - type: web
+    plan: free
     name: multi-tenant-backend
     runtime: node
     repo: https://github.com/kumarsiddharth05/multi-tenant-backend-
