@@ -14,7 +14,8 @@ async function seed() {
             '../migrations/002_create_users.sql',
             '../migrations/003_create_v2_schemas.sql',
             '../migrations/004_add_tenant_key.sql',
-            '../migrations/005_add_indexes.sql'
+            '../migrations/005_add_indexes.sql',
+            '../migrations/006_create_menu_and_status.sql'
         ];
 
         for (const file of migrations) {
