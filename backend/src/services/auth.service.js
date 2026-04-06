@@ -4,20 +4,20 @@ const db = require('../core/config/db');
 
 /**
  * Authenticate user and generate JWT token
- * @param {string} email - User email
+ * @param {string} phone - User phone number
  * @param {string} password - Plain text password
  * @returns {Promise<{token: string, user: object}>}
  * @throws {Error} If credentials are invalid
  */
-const login = async (email, password) => {
-    // Fetch user by email (include password_hash for comparison)
+const login = async (phone, password) => {
+    // Fetch user by phone (include password_hash for comparison)
     const sql = `
-    SELECT id, tenant_id, email, password_hash, role
+    SELECT id, tenant_id, phone, password_hash, role
     FROM users
-    WHERE email = $1
+    WHERE phone = $1
   `;
 
-    const result = await db.query(sql, [email.toLowerCase().trim()]);
+    const result = await db.query(sql, [phone.trim()]);
 
     if (result.rows.length === 0) {
         const error = new Error('Invalid credentials');
@@ -53,7 +53,7 @@ const login = async (email, password) => {
         token,
         user: {
             id: user.id,
-            email: user.email,
+            phone: user.phone,
             role: user.role,
             tenantId: user.tenant_id,
         },

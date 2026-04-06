@@ -18,7 +18,9 @@ async function seed() {
             '003_create_v2_schemas.sql',
             '004_add_tenant_key.sql',
             '005_add_indexes.sql',
-            '006_create_menu_and_status.sql'
+            '006_create_menu_and_status.sql',
+            '007_update_auth_to_phone.sql',
+            '008_add_rejected_status.sql'
         ];
 
         for (const file of migrations) {
@@ -52,27 +54,27 @@ async function seed() {
         }
 
         // Helper to create user
-        async function upsertUser(tenantId, email, password) {
+        async function upsertUser(tenantId, phone, password) {
             const hash = await bcrypt.hash(password, 10);
-            const existing = await pool.query("SELECT id FROM users WHERE email = $1", [email]);
+            const existing = await pool.query("SELECT id FROM users WHERE phone = $1", [phone]);
             if (existing.rows.length > 0) {
-                await pool.query("UPDATE users SET password_hash = $1, tenant_id = $2 WHERE email = $3", [hash, tenantId, email]);
-                console.log(`Updated user: ${email}`);
+                await pool.query("UPDATE users SET password_hash = $1, tenant_id = $2 WHERE phone = $3", [hash, tenantId, phone]);
+                console.log(`Updated user: ${phone}`);
                 return existing.rows[0].id;
             }
-            const res = await pool.query("INSERT INTO users (tenant_id, email, password_hash, role) VALUES ($1, $2, $3, 'owner') RETURNING id", [tenantId, email, hash]);
-            console.log(`Created user: ${email}`);
+            const res = await pool.query("INSERT INTO users (tenant_id, phone, password_hash, role) VALUES ($1, $2, $3, 'owner') RETURNING id", [tenantId, phone, hash]);
+            console.log(`Created user: ${phone}`);
             return res.rows[0].id;
         }
 
         // Create Restaurant Tenant & User
         const restId = await getOrCreateTenant('demo-restaurant', 'restaurant');
-        await upsertUser(restId, 'rest-owner@demo.com', 'secret123');
+        await upsertUser(restId, '9998887777', 'secret123');
         console.log('Restaurant:', 'demo-restaurant', restId);
 
         // Create Mechanic Tenant & User
         const mechId = await getOrCreateTenant('demo-mechanic', 'mechanic');
-        await upsertUser(mechId, 'mech-owner@demo.com', 'secret123');
+        await upsertUser(mechId, '6665554444', 'secret123');
         console.log('Mechanic:', 'demo-mechanic', mechId);
 
         console.log('--- Seeding Complete ---');

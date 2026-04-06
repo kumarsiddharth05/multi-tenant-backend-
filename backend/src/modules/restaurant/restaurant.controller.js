@@ -1,9 +1,9 @@
 const restaurantService = require('./restaurant.service');
 
 const create = async (tenantId, body) => {
-    const { tableNumber, customerName, items } = body;
-    if (!tableNumber || !customerName) {
-        const error = new Error('Missing required fields: tableNumber, customerName');
+    const { tableNumber, items } = body;
+    if (!tableNumber) {
+        const error = new Error('Missing required fields: tableNumber');
         error.statusCode = 400;
         throw error;
     }

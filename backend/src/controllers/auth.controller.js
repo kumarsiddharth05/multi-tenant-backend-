@@ -6,13 +6,13 @@ const authService = require('../services/auth.service');
  */
 const login = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const { phone, password } = req.body;
 
         // Validate required fields
-        if (!email || typeof email !== 'string' || email.trim() === '') {
+        if (!phone || typeof phone !== 'string' || !/^\d{10}$/.test(phone)) {
             return res.status(400).json({
                 error: {
-                    message: 'Email is required',
+                    message: 'Phone must be exactly a 10-digit number',
                     statusCode: 400,
                 },
             });
@@ -27,7 +27,7 @@ const login = async (req, res, next) => {
             });
         }
 
-        const result = await authService.login(email, password);
+        const result = await authService.login(phone, password);
 
         return res.status(200).json(result);
     } catch (error) {
