@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 const QRCodesManage = () => {
   const [tables, setTables] = useState([]);
-  const [tenantKey, setTenantKey] = useState('kumarsiddharth05');
+  const { tenantKey } = useAuth();
+  const [activeKey, setActiveKey] = useState('demo-restaurant');
 
   useEffect(() => {
-    // Read from localStorage to establish connection with Tables Manage section
+    // 1. Read from localStorage for Tables Manage connection
     const saved = localStorage.getItem('app_tables');
     if (saved) {
       setTables(JSON.parse(saved));
     }
     
-    // Optionally fetch tenantKey from stored auth info if available
-    const key = localStorage.getItem('tenant_key') || 'kumarsiddharth05';
-    setTenantKey(key);
+    // 2. Establish dynamic tenant key
+    const finalKey = tenantKey || localStorage.getItem('tenant_key') || 'demo-restaurant';
+    setActiveKey(finalKey);
     
-    // Listen for local storage changes in case Tables Manage is open in another tab
+    // 3. Listen for storage changes
     const handleStorageChange = (e) => {
       if (e.key === 'app_tables') {
         setTables(JSON.parse(e.newValue));
@@ -23,11 +25,11 @@ const QRCodesManage = () => {
     };
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+  }, [tenantKey]);
 
   const generateCustomerURL = (tableName) => {
     const origin = window.location.origin;
-    return `${origin}/${tenantKey}/table/${tableName}`;
+    return `${origin}/${activeKey}/table/${tableName}`;
   };
 
   const constructQRImageURL = (tableName) => {
@@ -70,33 +72,24 @@ const QRCodesManage = () => {
   const COLORS = ['#3B82F6', '#EA4335', '#34A853', '#A142F4', '#00C4B4', '#FF69B4', '#FF7A30'];
 
   return (
-    <div className="p-6 md:p-10 space-y-10 bg-white min-h-full relative font-['Space_Grotesk'] print-wrapper">
+    <div className="p-6 md:p-10 space-y-10 bg-white min-h-full relative print-wrapper">
       
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b-[4px] border-black pb-6 no-print">
         <div>
-          <h1 className="text-4xl font-black text-black uppercase tracking-widest tracking-tighter">QR Codes & Tables</h1>
+          <h1 className="text-4xl font-black text-black uppercase tracking-widest">QR Codes & Tables</h1>
           <p className="text-gray-500 font-bold uppercase tracking-widest mt-2 text-sm">Generate and print QR codes for your tables</p>
         </div>
 
         <div>
           <button 
             onClick={handlePrintAll}
-            style={{ '--btn-color': '#A855F7', backgroundColor: '#FAF5FF' }}
+            style={{ '--btn-color': '#A855F7', backgroundColor: 'white' }}
             className="relative flex items-center gap-3 p-1.5 font-black uppercase tracking-widest transition-all duration-150 border-[3px] border-black rounded-full group cursor-pointer shadow-[4px_4px_0px_0px_var(--btn-color)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_var(--btn-color)] active:translate-x-1 active:translate-y-1 active:shadow-none pr-5 text-black overflow-hidden"
           >
-             {/* Dot grid clipped to capsule */}
-             <div
-               className="absolute inset-0 pointer-events-none"
-               style={{
-                 backgroundImage: 'radial-gradient(#000 1px, transparent 1px)',
-                 backgroundSize: '10px 10px',
-                 opacity: 0.06,
-               }}
-             />
              <div 
                className="relative z-10 w-12 h-12 border-[2px] border-inherit rounded-full flex items-center justify-center shrink-0 transition-colors text-black"
-               style={{ backgroundColor: '#FAF5FF' }}
+               style={{ backgroundColor: 'white' }}
              >
                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
              </div>

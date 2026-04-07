@@ -134,35 +134,26 @@ const Sidebar = ({ isOpen, onClose }) => {
                 end={link.path === '/dashboard'}
                 onClick={onClose}
                 className={({ isActive }) => `
-                  relative flex items-center gap-3 p-1.5 font-black uppercase tracking-widest transition-all duration-150 border-[3px] rounded-full group cursor-pointer overflow-hidden
+                  relative flex items-center gap-3 p-1.5 font-black uppercase tracking-widest transition-all duration-200 border-[3px] rounded-full group cursor-pointer overflow-hidden
                   ${isActive
                     ? 'translate-x-1 translate-y-1 shadow-none'
-                    : 'shadow-[4px_4px_0px_0px_var(--btn-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_var(--btn-color)] active:translate-x-1 active:translate-y-1 active:shadow-none border-black'
+                    : 'bg-white border-black hover:-translate-y-1 shadow-[4px_4px_0px_0px_var(--btn-color)] active:translate-x-1 active:translate-y-1 active:shadow-none'
                   }
                 `}
                 style={({ isActive }) => ({
                   '--btn-color': link.color,
                   borderColor: isActive ? link.color : '#000',
-                  backgroundColor: link.bgTint,
+                  backgroundColor: isActive ? link.bgTint : '#FFF',
                 })}
               >
                 {({ isActive }) => (
                   <>
-                    {/* Dot grid clipped to capsule */}
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={{
-                        backgroundImage: 'radial-gradient(#000 1px, transparent 1px)',
-                        backgroundSize: '10px 10px',
-                        opacity: 0.06,
-                      }}
-                    />
                     {/* Icon circle */}
                     <div
-                      className="relative z-10 w-10 h-10 border-[2px] rounded-full flex items-center justify-center shrink-0 transition-colors text-black"
+                      className="relative z-10 w-10 h-10 border-[2px] rounded-full flex items-center justify-center shrink-0 transition-all duration-200 text-black shadow-inner"
                       style={{
                         borderColor: isActive ? link.color : '#000',
-                        backgroundColor: link.bgTint,
+                        backgroundColor: isActive ? '#FFF' : link.bgTint,
                       }}
                     >
                       <div className="w-4 h-4 flex-shrink-0">
@@ -182,15 +173,10 @@ const Sidebar = ({ isOpen, onClose }) => {
             <button
               id="logout-button"
               onClick={logout}
-              style={{ '--btn-color': '#EA4335', backgroundColor: '#FEF2F2' }}
-              className="w-full relative flex items-center gap-3 p-1.5 font-black uppercase tracking-widest transition-all duration-150 border-[3px] border-black rounded-full group cursor-pointer overflow-hidden shadow-[4px_4px_0px_0px_var(--btn-color)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_var(--btn-color)] active:translate-x-1 active:translate-y-1 active:shadow-none active:border-[#EA4335]"
+              style={{ '--btn-color': '#EA4335' }}
+              className="w-full relative flex items-center gap-3 p-1.5 bg-white text-black font-black uppercase tracking-widest transition-all duration-200 border-[3px] border-black rounded-full group cursor-pointer overflow-hidden shadow-[4px_4px_0px_0px_var(--btn-color)] hover:-translate-y-1 active:translate-x-1 active:translate-y-1 active:shadow-none active:border-[#EA4335] active:bg-[#FEF2F2]"
             >
-              {/* Dot grid */}
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '10px 10px', opacity: 0.06 }}
-              />
-              <div className="relative z-10 w-10 h-10 border-[2px] border-[#EA4335] rounded-full flex items-center justify-center shrink-0 bg-[#FEF2F2] text-black">
+              <div className="relative z-10 w-10 h-10 border-[2px] border-[#EA4335] rounded-full flex items-center justify-center shrink-0 bg-[#FEF2F2] group-active:bg-white transition-all duration-200 text-black">
                 <div className="w-4 h-4 flex-shrink-0">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 21H5V5h4" />

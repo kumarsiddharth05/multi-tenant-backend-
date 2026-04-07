@@ -7,13 +7,13 @@ const db = require('../core/config/db');
  * @returns {Promise<object>} Created menu item
  */
 const createMenuItem = async (tenantId, data) => {
-    const { name, description, price, category } = data;
+    const { name, description, price, category, is_veg } = data;
     const sql = `
-    INSERT INTO menu_items (tenant_id, name, description, price, category)
-    VALUES ($1, $2, $3, $4, $5)
-    RETURNING id, tenant_id, name, description, price, category, is_available, created_at
+    INSERT INTO menu_items (tenant_id, name, description, price, category, is_veg)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING id, tenant_id, name, description, price, category, is_veg, is_available, created_at
   `;
-    const result = await db.query(sql, [tenantId, name, description || null, price, category || null]);
+    const result = await db.query(sql, [tenantId, name, description || null, price, category || null, is_veg ?? true]);
     return result.rows[0];
 };
 
@@ -24,7 +24,7 @@ const createMenuItem = async (tenantId, data) => {
  */
 const getMenuByTenantId = async (tenantId) => {
     const sql = `
-    SELECT id, name, description, price, category, is_available, created_at
+    SELECT id, name, description, price, category, is_veg, is_available, created_at
     FROM menu_items
     WHERE tenant_id = $1
     ORDER BY category, name
@@ -40,7 +40,7 @@ const getMenuByTenantId = async (tenantId) => {
  */
 const getMenuByTenantKey = async (tenantKey) => {
     const sql = `
-    SELECT mi.id, mi.name, mi.description, mi.price, mi.category
+    SELECT mi.id, mi.name, mi.description, mi.price, mi.category, mi.is_veg
     FROM menu_items mi
     JOIN tenants t ON t.id = mi.tenant_id
     WHERE t.tenant_key = $1 AND mi.is_available = true
@@ -58,17 +58,18 @@ const getMenuByTenantKey = async (tenantKey) => {
  * @returns {Promise<object|null>} Updated menu item or null
  */
 const updateMenuItem = async (tenantId, itemId, data) => {
-    const { name, description, price, category } = data;
+    const { name, description, price, category, is_veg } = data;
     const sql = `
     UPDATE menu_items
     SET name = COALESCE($3, name),
         description = COALESCE($4, description),
         price = COALESCE($5, price),
-        category = COALESCE($6, category)
+        category = COALESCE($6, category),
+        is_veg = COALESCE($7, is_veg)
     WHERE id = $2 AND tenant_id = $1
-    RETURNING id, tenant_id, name, description, price, category, is_available, created_at
+    RETURNING id, tenant_id, name, description, price, category, is_veg, is_available, created_at
   `;
-    const result = await db.query(sql, [tenantId, itemId, name, description, price, category]);
+    const result = await db.query(sql, [tenantId, itemId, name, description, price, category, is_veg]);
     return result.rows[0] || null;
 };
 

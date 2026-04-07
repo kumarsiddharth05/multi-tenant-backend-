@@ -18,7 +18,7 @@ const getTenantByKey = async (key) => {
  */
 const getMenuByTenantKey = async (tenantKey) => {
     const sql = `
-    SELECT mi.id, mi.name, mi.description, mi.price, mi.category
+    SELECT mi.id, mi.name, mi.description, mi.price, mi.category, mi.is_veg
     FROM menu_items mi
     JOIN tenants t ON t.id = mi.tenant_id
     WHERE t.tenant_key = $1 AND mi.is_available = true

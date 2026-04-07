@@ -71,12 +71,12 @@ const TablesManage = () => {
   };
 
   return (
-    <div className="p-6 md:p-10 space-y-10 bg-white min-h-full relative font-['Space_Grotesk']">
+    <div className="p-6 md:p-10 space-y-10 bg-white min-h-full relative">
       
       {/* Top Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b-[4px] border-black pb-6">
         <div>
-          <h1 className="text-4xl font-black text-black uppercase tracking-widest tracking-tighter">Table Management</h1>
+          <h1 className="text-4xl font-black text-black uppercase tracking-widest">Table Management</h1>
           <p className="text-gray-500 font-bold uppercase tracking-widest mt-2 text-sm">Monitor and manage seating capacity</p>
         </div>
 

@@ -118,175 +118,232 @@ const DashboardHome = () => {
     { rank: 2, name: 'Paneer Tikka', sold: 3, revenue: '₹540', color: '#EA4335', bg: '#FEF2F2' },
     { rank: 3, name: 'Chilli Chicken', sold: 3, revenue: '₹720', color: '#10B981', bg: '#ECFDF5' },
     { rank: 4, name: 'Veg Spring Rolls', sold: 1, revenue: '₹150', color: '#A855F7', bg: '#FAF5FF' },
-    { rank: 5, name: 'Masala Coke', sold: 1, revenue: '₹50', color: '#F97316', bg: '#FFF7ED' },
+    { rank: 5, name: 'Coke', sold: 1, revenue: '₹50', color: '#F97316', bg: '#FFF7ED' },
+    { rank: 6, name: 'Butter Chicken', sold: 12, revenue: '₹2640', color: '#34A853', bg: '#F0FDF4' },
+    { rank: 7, name: 'Garlic Naan', sold: 25, revenue: '₹1250', color: '#4285F4', bg: '#EFF6FF' },
+    { rank: 8, name: 'Dal Makhani', sold: 8, revenue: '₹1920', color: '#EA4335', bg: '#FEF2F2' },
+    { rank: 9, name: 'Mutton Rogan Josh', sold: 4, revenue: '₹1560', color: '#F97316', bg: '#FFF7ED' },
+    { rank: 10, name: 'Lassi', sold: 15, revenue: '₹900', color: '#A855F7', bg: '#FAF5FF' },
+    { rank: 11, name: 'Gulab Jamun', sold: 20, revenue: '₹600', color: '#10B981', bg: '#ECFDF5' },
+    { rank: 12, name: 'Veg Biryani', sold: 5, revenue: '₹1100', color: '#4285F4', bg: '#EEF4FF' },
   ];
 
   const periodColors = {
-    'Today': { active: '#EA4335', bg: '#FEF2F2' },
-    'This Week': { active: '#34A853', bg: '#F0FDF4' },
-    'This Month': { active: '#4285F4', bg: '#EFF6FF' },
+    'Today': { active: '#EA4335', bg: '#FEF2F2', shadow: '#EA4335' },
+    'This Week': { active: '#34A853', bg: '#F0FDF4', shadow: '#34A853' },
+    'This Month': { active: '#4285F4', bg: '#EFF6FF', shadow: '#4285F4' },
   };
 
   return (
-    <div className="p-4 sm:p-6 md:p-10 space-y-8 bg-white min-h-full font-['Space_Grotesk']">
+    <>
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.05);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #000;
+          border-radius: 10px;
+          border: 2px solid transparent;
+          background-clip: content-box;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #333;
+        }
+      `}</style>
+      <div className="p-4 sm:p-6 md:p-10 space-y-8 bg-white min-h-full">
 
-      {/* ── Header ── */}
-      <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-black tracking-tighter uppercase leading-none mb-3">
-            Dashboard
-          </h1>
-          <p className="text-black font-black text-[10px] tracking-[0.2em] uppercase border-l-[4px] border-black pl-4">
-            Real-time performance analytics
-          </p>
+        {/* ── Header ── */}
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-black text-black tracking-widest uppercase leading-none mb-3">
+              Dashboard
+            </h1>
+            <p className="text-black font-black text-[10px] tracking-[0.2em] uppercase border-l-[4px] border-black pl-4">
+              Real-time performance analytics
+            </p>
+          </div>
+
+          <div className="flex items-center gap-4 flex-wrap print:hidden">
+            <NeoButton
+              onClick={handlePrint}
+              color="#A855F7"
+              bg="white"
+              borderColor="black"
+              showDots={false}
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download PDF</span>
+            </NeoButton>
+
+            <NeoButton
+              onClick={handleRefresh}
+              color="#F97316"
+              bg="white"
+              borderColor="black"
+              showDots={false}
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+              <span>Refresh</span>
+            </NeoButton>
+          </div>
         </div>
 
-        <div className="flex items-center gap-4 flex-wrap print:hidden">
-          <NeoButton
-            onClick={handlePrint}
-            color="#A855F7"
-            bg="#FAF5FF"
-            className="shadow-[4px_4px_0px_0px_black] hover:shadow-[6px_6px_0px_0px_black]"
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            <span>Download PDF</span>
-          </NeoButton>
-
-          <NeoButton
-            onClick={handleRefresh}
-            color="#F97316"
-            bg="#FFF7ED"
-            className="shadow-[4px_4px_0px_0px_black] hover:shadow-[6px_6px_0px_0px_black]"
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-              <polyline points="23 4 23 10 17 10"></polyline>
-              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-            </svg>
-            <span>Refresh</span>
-          </NeoButton>
-        </div>
-      </div>
-
-      {/* ── Period Switcher ── */}
-      <div className="flex gap-4 w-full overflow-x-auto pb-4 pt-4 -mt-4 custom-scrollbar">
-        {['Today', 'This Week', 'This Month'].map((p) => {
-          const col = periodColors[p];
-          const isActive = period === p;
-          return (
-            <button
-              key={p}
-              onClick={() => setPeriod(p)}
-              className={`
+        {/* ── Period Switcher ── */}
+        <div className="flex gap-4 w-full overflow-x-auto pb-4 pt-4 -mt-4 custom-scrollbar">
+          {['Today', 'This Week', 'This Month'].map((p) => {
+            const col = periodColors[p];
+            const isActive = period === p;
+            return (
+              <button
+                key={p}
+                onClick={() => setPeriod(p)}
+                className={`
                 whitespace-nowrap px-8 py-3 font-black uppercase text-xs tracking-[0.2em] 
                 border-[3px] rounded-full transition-all duration-200
                 ${isActive
-                  ? 'translate-x-1 translate-y-1 shadow-none border-black'
-                  : 'bg-white border-black shadow-[4px_4px_0px_0px_black] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_black]'
-                }
+                    ? 'translate-x-1 translate-y-1 shadow-none border-black'
+                    : 'bg-white border-black hover:-translate-y-1'
+                  }
               `}
-              style={{
-                backgroundColor: isActive ? col.bg : 'white',
-                color: 'black',
-                borderColor: isActive ? col.active : 'black'
-              }}
-            >
-              {p}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* ── Metric Cards ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <MetricCard label={`${period === 'Today' ? "Today's" : period} Revenue`} value={currentData.revenue} color="#34A853" bg="#F0FDF4" icon={<DollarIcon />} />
-        <MetricCard label={`${period === 'Today' ? "Today's" : period} Orders`} value={currentData.orders} color="#4285F4" bg="#EFF6FF" icon={<BoxIcon />} />
-        <MetricCard label="Active Orders" value={activeOrders} color="#F97316" bg="#FFF7ED" icon={<ActivityIcon />} />
-        <MetricCard label="Occupancy" value={tablesOccupancy} color="#EA4335" bg="#FEF2F2" icon={<UsersIcon />} />
-      </div>
-
-      {/* ── Chart + Top Items ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-        {/* Chart Column */}
-        <div className="lg:col-span-2">
-          <NeoCard padding="p-6 sm:p-10" className="h-full flex flex-col gap-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-              <div>
-                <h3 className="font-black text-2xl uppercase tracking-tighter leading-none text-black">{period === 'Today' ? "Today's" : period} Revenue</h3>
-                <div className="flex items-center gap-3 mt-2">
-                  <div className="w-2 h-2 rounded-full bg-[#EA4335] animate-pulse"></div>
-                  <p className="text-black font-black text-[10px] uppercase tracking-[0.2em]">Live Performance Data</p>
-                </div>
-              </div>
-
-              <div className="bg-[#F0FDF4] border-[3px] border-black rounded-full px-5 py-2 font-black text-black uppercase tracking-widest text-xs shadow-[4px_4px_0px_#34A853]">
-                Total: {currentData.revenue}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { label: 'Total Orders', value: currentData.orders, color: '#4285F4', bg: '#EFF6FF' },
-                { label: 'Peak Revenue', value: `₹${Math.max(...currentData.chartData.map(d => d.value)).toLocaleString()}`, color: '#34A853', bg: '#F0FDF4' },
-                { label: 'Avg / Transaction', value: `₹${Math.round(currentData.chartData.reduce((s, d) => s + d.value, 0) / (currentData.chartData.filter(d => d.value > 0).length || 1)).toLocaleString()}`, color: '#F97316', bg: '#FFF7ED' },
-              ].map((s, i) => (
-                <div key={i} className="border-[3px] border-black rounded-[24px] p-4 group transition-all" style={{ backgroundColor: s.bg }}>
-                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-black mb-2">{s.label}</p>
-                  <p className="font-black text-xl text-black leading-none">{s.value}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="h-[250px] w-full -mx-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={currentData.chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#34A853" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="#34A853" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="8 8" stroke="#000" strokeOpacity={0.05} vertical={false} />
-                  <XAxis
-                    dataKey="label"
-                    interval={period === 'This Month' ? 6 : 0}
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#000', fontWeight: '900', fontSize: 10 }}
-                    tickMargin={15}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#000', fontWeight: '900', fontSize: 10 }}
-                    width={40}
-                  />
-                  <Tooltip content={<AreaTooltip />} cursor={{ stroke: 'black', strokeWidth: 3, strokeDasharray: '8 8' }} />
-                  <Area
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#34A853"
-                    strokeWidth={4}
-                    fill="url(#revenueGradient)"
-                    dot={<CustomDot />}
-                    activeDot={{ r: 8, fill: '#34A853', stroke: 'black', strokeWidth: 3 }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </NeoCard>
+                style={{
+                  backgroundColor: isActive ? col.bg : 'white',
+                  color: 'black',
+                  borderColor: isActive ? col.active : 'black',
+                  boxShadow: isActive ? 'none' : `4px 4px 0px 0px ${col.shadow}`
+                }}
+              >
+                {p}
+              </button>
+            );
+          })}
         </div>
 
-        {/* Top Items Column */}
-        <NeoCard padding="p-6 sm:p-10" className="flex flex-col gap-6">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="font-black text-2xl uppercase tracking-tighter">Trending</h3>
-            <div className="w-10 h-10 bg-black border-[2px] border-black rounded-full flex items-center justify-center text-white shadow-[3px_3px_0px_#34A853]">
-              <style>{`
+        {/* ── Metric Cards ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <MetricCard label={`${period === 'Today' ? "Today's" : period} Revenue`} value={currentData.revenue} color="#34A853" bg="#F0FDF4" icon={<DollarIcon />} />
+          <MetricCard label={`${period === 'Today' ? "Today's" : period} Orders`} value={currentData.orders} color="#4285F4" bg="#EFF6FF" icon={<BoxIcon />} />
+          <MetricCard label="Active Orders" value={activeOrders} color="#F97316" bg="#FFF7ED" icon={<ActivityIcon />} />
+          <MetricCard label="Occupancy" value={tablesOccupancy} color="#EA4335" bg="#FEF2F2" icon={<UsersIcon />} />
+        </div>
+
+        {/* ── Chart + Top Items ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+          {/* Chart Column */}
+          <div className="lg:col-span-2">
+            <NeoCard padding="p-6 sm:p-10" shadowColor="#34A853" className="h-full flex flex-col gap-8 bg-[#F0FDF4] overflow-hidden relative group">
+              {/* Dot grid decoration matching the theme */}
+              <div
+                className="absolute inset-0 pointer-events-none opacity-20"
+                style={{
+                  backgroundImage: 'radial-gradient(#34A853 1.2px, transparent 1.2px)',
+                  backgroundSize: '16px 16px',
+                }}
+              />
+              {/* Decorative Bloom (Blob) */}
+              <div
+                className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full blur-[100px] opacity-20 pointer-events-none transition-all duration-700 group-hover:scale-110"
+                style={{ backgroundColor: '#34A853' }}
+              />
+
+              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                <div>
+                  <h3 className="font-black text-2xl uppercase tracking-tighter leading-none text-black">{period === 'Today' ? "Today's" : period} Revenue</h3>
+                  <div className="flex items-center gap-3 mt-2">
+                    <div className="w-2 h-2 rounded-full bg-[#EA4335] animate-pulse"></div>
+                    <p className="text-black font-black text-[10px] uppercase tracking-[0.2em]">Live Performance Data</p>
+                  </div>
+                </div>
+
+                <div className="bg-white border-[3px] border-black rounded-full px-5 py-2 font-black text-black uppercase tracking-widest text-xs shadow-[4px_4px_0px_#34A853]">
+                  Total: {currentData.revenue}
+                </div>
+              </div>
+
+              <div className="relative z-10 grid grid-cols-3 gap-4">
+                {[
+                  { label: 'Total Orders', value: currentData.orders, color: '#4285F4', bg: '#EFF6FF' },
+                  { label: 'Peak Revenue', value: `₹${Math.max(...currentData.chartData.map(d => d.value)).toLocaleString()}`, color: '#34A853', bg: '#F0FDF4' },
+                  { label: 'Avg / Transaction', value: `₹${Math.round(currentData.chartData.reduce((s, d) => s + d.value, 0) / (currentData.chartData.filter(d => d.value > 0).length || 1)).toLocaleString()}`, color: '#F97316', bg: '#FFF7ED' },
+                ].map((s, i) => (
+                  <div key={i} className="border-[3px] border-black rounded-[24px] p-4 bg-white/60 backdrop-blur-sm group transition-all hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_black] active:translate-y-0 active:shadow-none">
+                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-black mb-2">{s.label}</p>
+                    <p className="font-black text-xl text-black leading-none">{s.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="relative z-10 h-[250px] w-full -mx-4">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={currentData.chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#34A853" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#34A853" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="8 8" stroke="#000" strokeOpacity={0.05} vertical={false} />
+                    <XAxis
+                      dataKey="label"
+                      interval={period === 'This Month' ? 6 : 0}
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#000', fontWeight: '900', fontSize: 10 }}
+                      tickMargin={15}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: '#000', fontWeight: '900', fontSize: 10 }}
+                      width={40}
+                    />
+                    <Tooltip content={<AreaTooltip />} cursor={{ stroke: 'black', strokeWidth: 3, strokeDasharray: '8 8' }} />
+                    <Area
+                      type="monotone"
+                      dataKey="value"
+                      stroke="#34A853"
+                      strokeWidth={4}
+                      fill="url(#revenueGradient)"
+                      dot={<CustomDot />}
+                      activeDot={{ r: 8, fill: '#34A853', stroke: 'black', strokeWidth: 3 }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </NeoCard>
+          </div>
+
+          <NeoCard padding="p-6 sm:p-10" shadowColor="#4285F4" className="h-full flex flex-col gap-6 bg-[#EFF6FF] overflow-hidden relative group">
+            {/* Dot grid decoration */}
+            <div
+              className="absolute inset-0 pointer-events-none opacity-20"
+              style={{
+                backgroundImage: 'radial-gradient(#4285F4 1.2px, transparent 1.2px)',
+                backgroundSize: '16px 16px',
+              }}
+            />
+            {/* Bloom effect */}
+            <div
+              className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full blur-[100px] opacity-20 pointer-events-none"
+              style={{ backgroundColor: '#4285F4' }}
+            />
+
+            <div className="relative z-10 flex justify-between items-center mb-2">
+              <h3 className="font-black text-2xl uppercase tracking-tighter">Trending</h3>
+              <div className="w-10 h-10 bg-black border-[2px] border-black rounded-full flex items-center justify-center text-white shadow-[3px_3px_0px_#34A853]">
+                <style>{`
                 @keyframes trendingMove {
                   0%, 100% { transform: translate(0, 0); }
                   50% { transform: translate(2px, -2px); }
@@ -295,47 +352,48 @@ const DashboardHome = () => {
                   animation: trendingMove 1.5s ease-in-out infinite;
                 }
               `}</style>
-              <svg 
-                width="18" 
-                height="18" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="3.5" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                className="animate-trending"
-              >
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                <polyline points="17 6 23 6 23 12" />
-              </svg>
-            </div>
-          </div>
-
-          <div className="space-y-4 flex-1">
-            {topItems.map((item, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-4 bg-white border-[3px] border-black rounded-[24px] px-5 py-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-[5px_5px_0px_0px_black] group cursor-default"
-              >
-                <div
-                  className="w-10 h-10 flex items-center justify-center text-black font-black text-sm border-[3px] border-black rounded-full shrink-0"
-                  style={{ backgroundColor: item.bg, borderColor: item.color }}
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="animate-trending"
                 >
-                  {item.rank}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-black text-base text-black truncate tracking-tight">{item.name}</h4>
-                  <p className="text-[10px] font-black text-black uppercase tracking-[0.2em] mt-1">{item.sold} items sold</p>
-                </div>
-                <span className="font-black text-base text-black shrink-0">{item.revenue}</span>
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                  <polyline points="17 6 23 6 23 12" />
+                </svg>
               </div>
-            ))}
-          </div>
-        </NeoCard>
+            </div>
 
+            <div className="relative z-10 space-y-4 flex-1 overflow-y-auto pr-2 custom-scrollbar max-h-[520px]">
+              {topItems.map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-4 bg-white border-[3px] border-black rounded-[24px] px-5 py-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-[5px_5px_0px_0px_black] group cursor-default shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]"
+                >
+                  <div
+                    className="w-10 h-10 flex items-center justify-center text-black font-black text-sm border-[3px] border-black rounded-full shrink-0 shadow-sm"
+                    style={{ backgroundColor: item.bg, borderColor: item.color }}
+                  >
+                    {item.rank}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-black text-base text-black truncate tracking-tight">{item.name}</h4>
+                    <p className="text-[10px] font-black text-black uppercase tracking-[0.2em] mt-1">{item.sold} items sold</p>
+                  </div>
+                  <span className="font-black text-base text-black shrink-0">{item.revenue}</span>
+                </div>
+              ))}
+            </div>
+          </NeoCard>
+
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

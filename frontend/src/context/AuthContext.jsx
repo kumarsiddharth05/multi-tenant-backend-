@@ -8,23 +8,15 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const savedKey = localStorage.getItem('tenant_key');
     if (token) {
       try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        
-        const userData = JSON.parse(jsonPayload);
-        // Derive restaurant name from tenant_key (ideally this comes from the JWT or an API)
-        userData.restaurantName = userData.tenantId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); 
-        // Wait, the user said "Raju Sweets" in the mockup. 
-        // I'll try to find a better way to get the name later, but for now I'll use a derived one.
+        const userData = parseToken(token);
         setUser(userData);
       } catch (e) {
         console.error('Invalid token', e);
         localStorage.removeItem('token');
+        localStorage.removeItem('tenant_key');
       }
     }
     setLoading(false);
@@ -38,22 +30,27 @@ export const AuthProvider = ({ children }) => {
     }).join(''));
     const userData = JSON.parse(jsonPayload);
     userData.restaurantName = userData.tenantId?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    // Expose tenantKey (derived from tenantId or explicitly in token)
+    userData.tenantKey = userData.tenantId; 
     return userData;
   };
 
   const login = (token) => {
+    const userData = parseToken(token);
     localStorage.setItem('token', token);
-    setUser(parseToken(token));
+    localStorage.setItem('tenant_key', userData.tenantId);
+    setUser(userData);
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('tenant_key');
     setUser(null);
     window.location.href = '/login';
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, tenantKey: user?.tenantKey }}>
       {children}
     </AuthContext.Provider>
   );

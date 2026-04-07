@@ -78,10 +78,10 @@ const SettingsManage = () => {
   };
 
   return (
-    <div className="p-6 md:p-10 space-y-10 bg-gray-50 min-h-full relative font-['Space_Grotesk']">
+    <div className="p-6 md:p-10 space-y-10 bg-gray-50 min-h-full relative">
 
       <div className="border-b-[4px] border-black pb-6">
-        <h1 className="text-4xl font-black text-black uppercase tracking-widest tracking-tighter">Setting</h1>
+        <h1 className="text-4xl font-black text-black uppercase tracking-widest">Setting</h1>
         <p className="text-black font-bold uppercase tracking-widest mt-2 text-sm">Manage your profile and billing preference</p>
       </div>
 
@@ -89,9 +89,9 @@ const SettingsManage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
         {/* ════════════ Restaurant Profile Card ════════════ */}
-        <div className="bg-[#f0f9ff] rounded-[32px] border-[4px] border-black shadow-[8px_8px_0px_0px_#4285F4] p-8 space-y-8 relative overflow-hidden group hover:shadow-[12px_12px_0px_0px_#4285F4] transition-shadow duration-300">
-          <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
-          <div className="absolute -right-8 -top-8 w-32 h-32 bg-[#4285F4]/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none z-0"></div>
+        <div className="bg-white rounded-[32px] border-[4px] border-black shadow-[8px_8px_0px_0px_#4285F4] p-8 space-y-8 relative overflow-hidden group hover:shadow-[12px_12px_0px_0px_#4285F4] transition-shadow duration-300">
+          <div className="absolute inset-0 opacity-[0.2] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#4285F4 2px, transparent 2px)', backgroundSize: '24px 24px' }}></div>
+          <div className="absolute -right-16 -top-16 w-64 h-64 bg-[#4285F4] opacity-[0.15] rounded-full blur-[80px] group-hover:scale-125 transition-transform duration-700 pointer-events-none z-0"></div>
 
           <div className="flex items-center relative z-10">
              <h2 className="text-xl sm:text-2xl font-black text-black uppercase tracking-widest bg-[#4285F4] text-white px-4 py-1 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -rotate-2">
@@ -127,7 +127,7 @@ const SettingsManage = () => {
             className={`relative z-10 w-full py-4 rounded-xl font-black uppercase tracking-widest border-[4px] border-black transition-all flex items-center justify-center gap-2 text-sm ${
               profileSaved
                 ? 'bg-[#4285F4] text-white shadow-none translate-x-1.5 translate-y-1.5 tracking-[0.2em]'
-                : 'bg-black text-white hover:bg-white hover:text-black shadow-[6px_6px_0px_0px_#4285F4] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_#4285F4] active:translate-x-1.5 active:translate-y-1.5 active:shadow-none'
+                : 'bg-white text-black hover:-translate-y-1 hover:-translate-x-1 shadow-[6px_6px_0px_0px_#4285F4] hover:shadow-[10px_10px_0px_0px_#4285F4] active:translate-x-1.5 active:translate-y-1.5 active:shadow-none'
             }`}
           >
             {profileSaved ? '✓ Saved!' : 'Save Profile'}
@@ -135,9 +135,9 @@ const SettingsManage = () => {
         </div>
 
         {/* ════════════ Billing & Invoicing Card ════════════ */}
-        <div className="bg-[#faf5ff] rounded-[32px] border-[4px] border-black shadow-[8px_8px_0px_0px_#A855F7] p-8 space-y-8 relative overflow-hidden group hover:shadow-[12px_12px_0px_0px_#A855F7] transition-shadow duration-300">
-          <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '30px 30px' }}></div>
-          <div className="absolute -right-8 -top-8 w-32 h-32 bg-[#A855F7]/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500 pointer-events-none z-0"></div>
+        <div className="bg-white rounded-[32px] border-[4px] border-black shadow-[8px_8px_0px_0px_#A855F7] p-8 space-y-8 relative overflow-hidden group hover:shadow-[12px_12px_0px_0px_#A855F7] transition-shadow duration-300">
+          <div className="absolute inset-0 opacity-[0.2] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#A855F7 2px, transparent 2px)', backgroundSize: '24px 24px' }}></div>
+          <div className="absolute -right-16 -top-16 w-64 h-64 bg-[#A855F7] opacity-[0.15] rounded-full blur-[80px] group-hover:scale-125 transition-transform duration-700 pointer-events-none z-0"></div>
 
           <div className="relative z-10 flex items-start">
              <h2 className="text-xl sm:text-2xl font-black text-black uppercase tracking-widest bg-[#A855F7] text-white px-4 py-1 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rotate-2">
@@ -171,7 +171,7 @@ const SettingsManage = () => {
             <div className="flex justify-between items-center bg-white px-5 py-4 rounded-xl border-[3px] border-black">
               <div>
                 <p className="text-black font-black text-sm uppercase tracking-widest">Auto-reset daily</p>
-                <p className="text-gray-500 text-[10px] font-bold mt-1 uppercase">Reset bill numbers to 1 every day</p>
+                <p className="text-black/60 text-[10px] font-bold mt-1 uppercase">Reset bill numbers to 1 every day</p>
               </div>
               <ToggleSwitch checked={billing.autoReset} onChange={v => setBilling({...billing, autoReset: v})} />
             </div>
@@ -187,7 +187,7 @@ const SettingsManage = () => {
             className={`relative z-10 w-full py-4 rounded-xl font-black uppercase tracking-widest border-[4px] border-black transition-all flex items-center justify-center gap-2 text-sm ${
               billingSaved
                 ? 'bg-[#A855F7] text-white shadow-none translate-x-1.5 translate-y-1.5 tracking-[0.2em]'
-                : 'bg-black text-white hover:bg-white hover:text-black shadow-[6px_6px_0px_0px_#A855F7] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[10px_10px_0px_0px_#A855F7] active:translate-x-1.5 active:translate-y-1.5 active:shadow-none'
+                : 'bg-white text-black hover:-translate-y-1 hover:-translate-x-1 shadow-[6px_6px_0px_0px_#A855F7] hover:shadow-[10px_10px_0px_0px_#A855F7] active:translate-x-1.5 active:translate-y-1.5 active:shadow-none'
             }`}
           >
             {billingSaved ? '✓ Saved!' : 'Save'}

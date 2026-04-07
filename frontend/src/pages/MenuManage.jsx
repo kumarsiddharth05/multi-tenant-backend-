@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DietaryIcon from '../components/DietaryIcon';
 
 const COLORS = [
   '#0F172A', '#4285F4', '#EA4335', '#34A853',
@@ -22,12 +23,14 @@ const MenuManage = () => {
     const s = localStorage.getItem('app_categories');
     if (s) {
       let parsed = JSON.parse(s);
-      // Auto-migrate legacy yellow to new slate so it vanishes from the UI
+      // Auto-migrate legacy colors
       parsed = parsed.map(c => (c.color === '#FBBC05' || c.color === '#3B82F6' || c.color === '#22D3EE') ? { ...c, color: '#0F172A' } : c);
+      // Migration: Update Starters to Purple
+      parsed = parsed.map(c => (c.name === 'Starters' && c.color === '#0F172A') ? { ...c, color: '#A142F4' } : c);
       return parsed;
     }
     return [
-      { id: 1, name: 'Starters', color: '#0F172A' },
+      { id: 1, name: 'Starters', color: '#A142F4' },
       { id: 2, name: 'Main Course', color: '#4285F4' },
       { id: 3, name: 'Breads', color: '#34A853' },
       { id: 4, name: 'Rice & Biryani', color: '#EA4335' },
@@ -167,13 +170,13 @@ const MenuManage = () => {
 
   /* ── Render ── */
   return (
-    <div className="p-4 sm:p-6 md:p-10 space-y-6 bg-white min-h-full relative font-['Space_Grotesk']">
+    <div className="p-4 sm:p-6 md:p-10 space-y-6 bg-white min-h-full relative">
 
       {/* ── Header & Discounts Set ── */}
       <div className="flex flex-col md:flex-row md:items-end justify-between border-b-[4px] border-black pb-5 gap-4">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-black text-black uppercase tracking-tighter leading-none">Menu Management</h1>
-          <p className="text-black font-black uppercase tracking-widest mt-2 text-xs border-l-[3px] border-[#FBBC05] pl-3 opacity-60">Manage categories, items, and offers</p>
+          <h1 className="text-3xl sm:text-4xl font-black text-black uppercase tracking-widest leading-none">Menu Management</h1>
+          <p className="text-black font-black uppercase tracking-widest mt-2 text-xs border-l-[3px] border-[#FBBC05] pl-3">Manage categories, items, and offers</p>
         </div>
         {/* Modern Discount Button */}
         <button
@@ -244,10 +247,10 @@ const MenuManage = () => {
           </div>
           <button
             onClick={() => handleOpenItemModal()}
-            className="flex items-center gap-1.5 px-4 py-2 bg-black text-white border-[3px] border-black rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-200 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none"
+            className="flex items-center gap-1.5 px-4 py-2 bg-white text-black border-[3px] border-black rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-200 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none"
             style={{ boxShadow: `4px 4px 0px ${activeCat?.color || '#000'}` }}
           >
-            <span className="text-sm leading-none">+</span> Add Item
+            <span className="text-xl leading-none font-black">+</span> Add Item
           </button>
         </div>
 
@@ -257,11 +260,11 @@ const MenuManage = () => {
             <svg className="w-8 h-8 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 6h18M3 12h18M3 18h18" />
             </svg>
-            <span className="font-black uppercase tracking-widest text-sm text-black opacity-40">No Items Yet</span>
+            <span className="font-black uppercase tracking-widest opacity-40">No items available in this category</span>
           </div>
         ) : (
-          /* ── Optimized Grid ── */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pb-8">
+          /* ── Compact Vertical Grid ── */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 pb-8 items-stretch">
             {displayedItems.map((item) => {
               const isHovered = hoveredItemId === item.id;
               const catColor = activeCat?.color || '#000';
@@ -271,124 +274,131 @@ const MenuManage = () => {
               const finalPrice = hasDiscount ? Math.round(item.price * (1 - discountPercent / 100)) : item.price;
 
               return (
-                <div
-                  key={item.id}
-                  onMouseEnter={() => setHoveredItemId(item.id)}
-                  onMouseLeave={() => setHoveredItemId(null)}
-                  style={{
-                    backgroundColor: tint,
-                    borderColor: '#000',
-                    boxShadow: isHovered ? 'none' : `5px 5px 0px ${catColor}`,
-                    transform: isHovered ? 'translate(5px,5px)' : 'none',
-                  }}
-                  className="relative flex flex-row rounded-2xl border-[3px] transition-all duration-200 overflow-hidden h-36"
-                >
-                  {/* Dot grid overlay */}
+                <div key={item.id} className="relative group h-[340px]">
                   <div
-                    className="absolute inset-0 pointer-events-none z-0"
-                    style={{ backgroundImage: 'radial-gradient(#000 1.5px, transparent 1.5px)', backgroundSize: '12px 12px', opacity: 0.04 }}
-                  />
+                    onMouseEnter={() => setHoveredItemId(item.id)}
+                    onMouseLeave={() => setHoveredItemId(null)}
+                    style={{
+                      backgroundColor: tint,
+                      borderColor: '#000',
+                      boxShadow: isHovered ? 'none' : `4px 4px 0px ${catColor}`,
+                      transform: isHovered ? 'translate(2px,2px)' : 'none',
+                    }}
+                    className="relative flex flex-col rounded-[20px] border-[2.5px] transition-all duration-200 overflow-hidden h-full"
+                  >
+                    {/* Dot grid overlay */}
+                    <div
+                      className="absolute inset-0 pointer-events-none z-0 opacity-[0.06]"
+                      style={{ backgroundImage: 'radial-gradient(#000 1.2px, transparent 1.2px)', backgroundSize: '10px 10px' }}
+                    />
 
-                  {/* Horizontal Image Section */}
-                  <div className="relative z-10 w-28 h-full flex items-center justify-center border-r-[3px] shrink-0 bg-white border-black">
-                    {item.image ? (
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <svg className="w-10 h-10 opacity-15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    )}
-                    {/* Discount Badge */}
-                    {hasDiscount && (
-                      <div className="absolute top-2 left-2 bg-[#EA4335] text-white text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border-[2px] border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] -rotate-3">
-                        {discountPercent}% OFF
-                      </div>
-                    )}
-                  </div>
+                    {/* Decorative Glowing Blob */}
+                    <div
+                      className="absolute -right-6 -bottom-6 w-20 h-20 rounded-full blur-2xl opacity-15 pointer-events-none transition-transform group-hover:scale-150 duration-500 z-0"
+                      style={{ backgroundColor: catColor }}
+                    />
 
-                  {/* Content Horizontal Splitting */}
-                  <div className="relative z-10 flex flex-col flex-1 p-3.5 gap-1.5 overflow-hidden justify-between">
-
-                    {/* Top Row: Title + Price Container */}
-                    <div className="flex justify-between items-start gap-2">
-                      {/* Title and Badges */}
-                      <div className="flex flex-col gap-1 pr-1 min-w-0">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <div className="shrink-0 w-3.5 h-3.5 border-[2px] border-black rounded-sm flex items-center justify-center bg-white mt-0.5">
-                            <div className={`w-1.5 h-1.5 rounded-full ${item.isVeg ? 'bg-green-600' : 'bg-red-600'}`} />
-                          </div>
-                          <h3 className="font-black text-lg leading-tight text-black truncate">{item.name}</h3>
-                          {item.isSpicy && <span className="text-sm shrink-0">🌶️</span>}
+                    {/* Top Image Section */}
+                    <div className="relative z-10 w-full h-[130px] border-b-[2.5px] shrink-0 bg-white border-black">
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <svg className="w-8 h-8 opacity-15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
                         </div>
+                      )}
 
-                        {/* Mini Details Tags */}
-                        {(item.protein || item.calories) && (
-                          <div className="flex gap-1">
-                            {item.protein && <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 border-[1.5px] border-black bg-white rounded flex items-center gap-1"><span className="opacity-50">Protein</span> {item.protein}</span>}
-                            {item.calories && <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 border-[1.5px] border-black bg-white rounded flex items-center gap-1"><span className="opacity-50">Cal</span> {item.calories}</span>}
+                      {/* Price Badge Over Image */}
+                      <div className="absolute top-2.5 right-2.5 bg-white text-black font-black text-sm px-3 py-1.5 rounded-md border-[2.5px] border-black shadow-[3.5px_3.5px_0px_rgba(0,0,0,1)] leading-none tracking-widest z-20">
+                        {hasDiscount ? (
+                          <div className="flex items-center gap-1.5">
+                            <span className="line-through opacity-40 text-[10px]">₹{item.price}</span>
+                            <span>₹{finalPrice}</span>
                           </div>
+                        ) : (
+                          <span>₹{finalPrice}</span>
                         )}
                       </div>
 
-                      {/* Price Block */}
-                      <div className="shrink-0 flex flex-col items-end pt-0.5">
-                        {hasDiscount && (
-                          <span className="text-xs font-black line-through text-black/40 leading-none mb-0.5">
-                            ₹{item.price}
+                      {/* Discount Badge */}
+                      {hasDiscount && (
+                        <div className="absolute top-2.5 left-2.5 bg-[#EA4335] text-white text-xs font-black uppercase tracking-widest px-2 py-1 rounded-md border-[2.5px] border-black shadow-[3.5px_3.5px_0px_rgba(0,0,0,1)] -rotate-3 z-20">
+                          {discountPercent}% OFF
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Content Vertical Splitting */}
+                    <div className="relative z-10 flex flex-col flex-1 p-3 gap-2 justify-between min-h-0">
+
+                      {/* Top Row: Title + Details Container */}
+                      <div className="flex flex-col gap-1.5">
+                        {/* Title and Badges */}
+                        <div className="flex items-start gap-3 flex-wrap min-w-0 items-center">
+                          <DietaryIcon isVeg={item.isVeg} size={28} />
+                          <h3 className="font-black text-xl leading-tight text-black flex-1 break-words uppercase tracking-tighter">{item.name}</h3>
+                          {item.isSpicy && <span className="text-xl shrink-0 -mt-1">🌶️</span>}
+                        </div>
+
+                        {/* Description - Scrollable if too long */}
+                        {item.description && (
+                          <p className="text-xs font-black text-black leading-snug line-clamp-3 uppercase tracking-widest pl-8 overflow-y-auto">
+                            {item.description}
+                          </p>
+                        )}
+
+                          <div className="flex gap-2 mt-1.5 pl-6 flex-wrap">
+                            {item.protein && <span className="text-[10px] font-black uppercase px-2 py-1 border-[2.5px] border-black bg-white rounded-md flex items-center gap-1.5 shadow-[2px_2px_0px_rgba(0,0,0,1)] leading-none"><span>💪</span> <span className="text-black">{item.protein}</span></span>}
+                            {item.calories && <span className="text-[10px] font-black uppercase px-2 py-1 border-[2.5px] border-black bg-white rounded-md flex items-center gap-1.5 shadow-[2px_2px_0px_rgba(0,0,0,1)] leading-none"><span>🔥</span> <span className="text-black">{item.calories}</span></span>}
+                          </div>
+                      </div>
+
+                      {/* Bottom Row: Availability vs Actions */}
+                      <div className="flex justify-between items-center mt-1 pt-3 border-t-[1.5px] border-black/10 shrink-0">
+
+                        {/* Full Availability Toggle */}
+                        <button
+                          onClick={() => toggleItemAvailability(item.id)}
+                          className="flex items-center gap-2 group p-1 rounded-lg transition-colors -ml-1 border-[2px] border-transparent"
+                        >
+                          <div className={`w-12 h-6 rounded-full border-[2.5px] border-black relative transition-colors duration-200 shrink-0 ${item.isAvailable ? 'bg-[#34A853]' : 'bg-[#EA4335]'}`}>
+                            <div className={`absolute top-[1.5px] w-4 h-4 bg-white border-[2px] border-black rounded-full transition-transform duration-200 ${item.isAvailable ? 'translate-x-[24px]' : 'translate-x-[1.5px]'}`} />
+                          </div>
+                          <span className={`text-xs font-black uppercase tracking-widest ${item.isAvailable ? 'text-[#34A853]' : 'text-[#EA4335]'}`}>
+                            {item.isAvailable ? 'Available' : 'Unavailable'}
                           </span>
-                        )}
-                        <span
-                          className="font-black text-sm px-2.5 py-1 rounded-lg border-[3px] border-black bg-white leading-none whitespace-nowrap"
-                          style={{ boxShadow: `3px 3px 0px ${catColor}` }}
-                        >₹{finalPrice}</span>
-                      </div>
-                    </div>
+                        </button>
 
-                    {/* Bottom Split Row: Availability vs Actions */}
-                    <div className="flex justify-between items-center mt-auto">
-
-                      {/* Bold Availability Toggle */}
-                      <button
-                        onClick={() => toggleItemAvailability(item.id)}
-                        className={`flex items-center gap-2 group px-2 py-1.5 rounded-lg border-[2px] border-transparent hover:border-black/10 transition-colors -ml-2`}
-                      >
-                        <div className={`w-8 h-4 rounded-full border-[2px] border-black relative transition-colors duration-200 shrink-0 ${item.isAvailable ? 'bg-[#34A853]' : 'bg-[#EA4335]'}`}>
-                          <div className={`absolute top-[1px] w-2.5 h-2.5 bg-white border-[2px] border-black rounded-full transition-transform duration-200 ${item.isAvailable ? 'translate-x-[14px]' : 'translate-x-[1px]'}`} />
+                        {/* Edit Button (Bottom Right) */}
+                        <div className="flex gap-1.5">
+                          <button
+                            onPointerDown={() => setPressedBtnId(`edit-${item.id}`)}
+                            onPointerUp={() => setPressedBtnId(null)}
+                            onPointerLeave={() => setPressedBtnId(null)}
+                            onClick={() => handleOpenItemModal(item)}
+                            className="w-10 h-10 rounded-full flex items-center justify-center bg-white border-[2.5px] border-black hover:-translate-y-0.5 active:translate-y-0 transition-all text-[#4285F4]"
+                          >
+                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                              <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                            </svg>
+                          </button>
                         </div>
-                        <span className={`text-xs font-black uppercase tracking-widest ${item.isAvailable ? 'text-[#34A853]' : 'text-[#EA4335]'}`}>
-                          {item.isAvailable ? 'Available' : 'Unavailable'}
-                        </span>
-                      </button>
-
-                      {/* Explicit High Visibility Buttons */}
-                      <div className="flex gap-2">
-                        <button
-                          onPointerDown={() => setPressedBtnId(`edit-${item.id}`)}
-                          onPointerUp={() => setPressedBtnId(null)}
-                          onPointerLeave={() => setPressedBtnId(null)}
-                          onClick={() => handleOpenItemModal(item)}
-                          className="w-9 h-9 rounded-xl flex items-center justify-center bg-white border-[3px] shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#4285F4] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all"
-                          style={{ borderColor: '#4285F4', color: '#4285F4' }}
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                          </svg>
-                        </button>
-                        <button
-                          onPointerDown={() => setPressedBtnId(`del-${item.id}`)}
-                          onPointerUp={() => setPressedBtnId(null)}
-                          onPointerLeave={() => setPressedBtnId(null)}
-                          onClick={() => handleDeleteItem(item.id)}
-                          className="w-9 h-9 rounded-xl flex items-center justify-center bg-white border-[3px] shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#EA4335] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all"
-                          style={{ borderColor: '#EA4335', color: '#EA4335' }}
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                        </button>
                       </div>
                     </div>
                   </div>
+
+                  {/* Item Delete Cross (Top-Right Corner) */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleDeleteItem(item.id); }}
+                    className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-white border-[2px] border-black rounded-full hidden group-hover:flex items-center justify-center shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:bg-[#EA4335] hover:text-white text-[#EA4335] transition-all z-30"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                 </div>
               );
             })}
@@ -609,10 +619,10 @@ const MenuManage = () => {
                   <div className="flex items-center gap-4 h-[55px] border-[3px] border-black rounded-xl px-4 bg-gray-50 flex-wrap">
                     {/* Veg toggle */}
                     <div className="flex items-center gap-2 cursor-pointer" onClick={() => setItemForm({ ...itemForm, isVeg: !itemForm.isVeg })}>
-                      <div className="w-10 h-5 rounded-full border-[2px] border-black relative" style={{ backgroundColor: itemForm.isVeg ? '#34A853' : '#EA4335' }}>
-                        <div className={`absolute top-[1.5px] w-3.5 h-3.5 bg-white border-[2px] border-black rounded-full transition-transform ${itemForm.isVeg ? 'translate-x-[20px]' : 'translate-x-[1.5px]'}`} />
+                      <div className="flex items-center justify-center w-10 h-6 bg-white border-[2px] border-black rounded-lg transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5">
+                        <DietaryIcon isVeg={itemForm.isVeg} size={16} />
                       </div>
-                      <span className="text-xs font-black uppercase tracking-widest" style={{ color: itemForm.isVeg ? '#34A853' : '#EA4335' }}>
+                      <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: itemForm.isVeg ? '#34A853' : '#EA4335' }}>
                         {itemForm.isVeg ? 'Veg' : 'N-Veg'}
                       </span>
                     </div>
