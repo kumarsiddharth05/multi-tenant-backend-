@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&display=swap');
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #ffffff;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+@keyframes brutalPop {
+  0%, 100% {
+    transform: translate(0, 0);
+    box-shadow: 1px 1px 0px 0px rgba(30,41,59,1);
+    background-color: #ffffff;
+  }
+  50% {
+    transform: translate(-4px, -4px);
+    box-shadow: 4px 4px 0px 0px rgba(30,41,59,1);
+    background-color: #FBBC05;
+  }
+}
+
+.animate-brutal-pop {
+  animation: brutalPop 1.5s ease-in-out infinite;
+}

@@ -1,4 +1,5 @@
 const dashboardService = require('../services/dashboard.service');
+const socket = require('../socket');
 
 const restaurantModule = require('../modules/restaurant/restaurant.controller');
 const mechanicModule = require('../modules/mechanic/mechanic.controller');
@@ -16,8 +17,9 @@ const getDashboard = async (req, res, next) => {
     try {
         const { tenantId } = req.user;
 
-        // 1. Detect Tenant Type
+        // 1. Detect Tenant Type & Key
         const type = await dashboardService.getTenantType(tenantId);
+        const tenantKey = await dashboardService.getTenantKey(tenantId);
         if (!type || !handlers[type]) {
             return res.status(404).json({ error: { message: 'Tenant type not found or unsupported', statusCode: 404 } });
         }
@@ -27,6 +29,7 @@ const getDashboard = async (req, res, next) => {
 
         return res.status(200).json({
             type,
+            tenantKey,
             count: data.length,
             data,
         });
@@ -35,8 +38,8 @@ const getDashboard = async (req, res, next) => {
     }
 };
 
-const VALID_ORDER_STATUSES = ['pending', 'preparing', 'ready', 'completed'];
-const VALID_JOB_STATUSES = ['pending', 'completed'];
+const VALID_ORDER_STATUSES = ['pending', 'preparing', 'ready', 'completed', 'rejected', 'paid'];
+const VALID_JOB_STATUSES = ['pending', 'completed', 'rejected', 'paid'];
 
 /**
  * PATCH /dashboard/:type/:id/status
@@ -75,6 +78,19 @@ const updateOrderStatus = async (req, res, next) => {
             return res.status(404).json({
                 error: { message: 'Record not found or access denied', statusCode: 404 }
             });
+        }
+        
+        // Emit status updates back to active customers
+        const tenantKey = await dashboardService.getTenantKey(tenantId);
+        if (tenantKey) {
+            try {
+                const io = socket.getIo();
+                if (tenantType === 'restaurant') {
+                    io.to(tenantKey).emit('order_updated', result);
+                }
+            } catch (err) {
+                console.error('Socket emit error for order_updated:', err);
+            }
         }
 
         return res.status(200).json(result);

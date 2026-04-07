@@ -23,13 +23,13 @@ const updateRestaurantOrderStatus = async (tenantId, orderId, status) => {
 };
 
 const createRestaurantOrder = async (tenantId, data) => {
-    const { tableNumber, customerName, items } = data;
+    const { tableNumber, items } = data;
     const sql = `
     INSERT INTO restaurant_orders (tenant_id, table_number, customer_name, items)
     VALUES ($1, $2, $3, $4)
     RETURNING id, table_number, customer_name, items, status, created_at
   `;
-    const result = await db.query(sql, [tenantId, tableNumber, customerName, JSON.stringify(items || [])]);
+    const result = await db.query(sql, [tenantId, tableNumber, 'Anonymous', JSON.stringify(items || [])]);
     return result.rows[0];
 };
 

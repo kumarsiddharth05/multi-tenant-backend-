@@ -1,5 +1,6 @@
 const publicService = require('../services/public.service');
 const menuService = require('../services/menu.service');
+const socket = require('../socket');
 
 const restaurantModule = require('../modules/restaurant/restaurant.controller');
 const mechanicModule = require('../modules/mechanic/mechanic.controller');
@@ -136,6 +137,9 @@ const submitRequest = async (req, res, next) => {
                     quantity: item.quantity || 1,
                 };
             });
+            
+            // Normalize frontend payload
+            req.body.tableNumber = req.body.table_number || req.body.tableNumber;
         }
 
         const handler = handlers[tenant.type];
@@ -145,6 +149,17 @@ const submitRequest = async (req, res, next) => {
 
         // 4. Process Request via Module
         const result = await handler.create(tenant.id, req.body);
+        
+        // Emit event to connected kitchen screens / clients in tenant's room
+        if (isOrder) {
+            try {
+                const io = socket.getIo();
+                io.to(tenantKey).emit('new_order', result);
+            } catch (err) {
+                console.error('Socket emit error for new_order:', err);
+            }
+        }
+        
         return res.status(201).json(result);
 
     } catch (error) {
