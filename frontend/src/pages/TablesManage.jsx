@@ -81,23 +81,33 @@ const TablesManage = () => {
         </div>
 
         <div className="flex items-center gap-8">
-          <div className="flex gap-6 text-center">
-            <div className="flex flex-col items-center">
-              <span className="text-3xl font-black text-[#4285F4]">{freeSeats}</span>
-              <span className="text-xs font-black uppercase tracking-widest text-gray-400">Free</span>
+          <div className="flex gap-3 items-center">
+            {/* Miniature Vacant Card for Free Seats */}
+            <div className="flex flex-col items-center justify-center w-20 h-20 border-[3.5px] border-[#4285F4] rounded-2xl bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] px-2 py-1 relative">
+              <span className="text-3xl font-black text-[#4285F4] leading-tight">{freeSeats}</span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-black">Free</span>
             </div>
-            <div className="flex flex-col items-center">
-              <span className="text-3xl font-black text-[#EA4335]">{occupiedSeats}</span>
-              <span className="text-xs font-black uppercase tracking-widest text-gray-400">Occupied</span>
+
+            {/* Miniature Occupied Card for Occupied Seats */}
+            <div className="flex flex-col items-center justify-center w-20 h-20 border-[3.5px] border-[#EA4335] rounded-2xl bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] px-2 py-1 relative overflow-hidden">
+               {/* Blinking Red Dot */}
+               <div className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#EA4335] rounded-full animate-ping"></div>
+               <div className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#EA4335] rounded-full border border-white"></div>
+               
+              <span className="text-3xl font-black text-[#EA4335] leading-tight">{occupiedSeats}</span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-black">Busy</span>
             </div>
-            <div className="flex flex-col items-center">
-              <span className="text-3xl font-black text-black">{totalSeats}</span>
-              <span className="text-xs font-black uppercase tracking-widest text-gray-400">Total</span>
+
+            {/* Miniature Total Card */}
+            <div className="flex flex-col items-center justify-center w-20 h-20 border-[3.5px] border-[#A142F4] rounded-2xl bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] px-2 py-1 relative">
+              <span className="text-3xl font-black text-[#A142F4] leading-tight">{totalSeats}</span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-black">Total</span>
             </div>
           </div>
+          
           <button 
             onClick={() => setIsAddOpen(true)}
-            className="bg-white text-black px-6 py-4 rounded-xl border-[4px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center gap-2"
+            className="bg-white text-black px-8 py-3.5 rounded-full border-[4px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-black uppercase tracking-widest text-sm hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center gap-2.5"
           >
             <span className="text-xl leading-none">+</span> Add Seats
           </button>

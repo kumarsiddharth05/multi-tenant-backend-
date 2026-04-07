@@ -179,15 +179,19 @@ const MenuManage = () => {
           <p className="text-black font-black uppercase tracking-widest mt-2 text-xs border-l-[3px] border-[#FBBC05] pl-3">Manage categories, items, and offers</p>
         </div>
         {/* Modern Discount Button */}
+        {/* Modern Discount Button - High-Fidelity Capsule */}
         <button
           onClick={() => setIsDiscountOpen(true)}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl border-[3px] border-black font-black uppercase tracking-widest text-sm transition-all hover:-translate-y-1 ${hasAnyDiscounts
-            ? 'bg-[#34A853] text-white shadow-[4px_4px_0px_#1a7a3f] active:shadow-none active:translate-y-1 active:translate-x-1'
-            : 'bg-white text-black shadow-[4px_4px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 active:translate-x-1'
-            }`}
+          className="flex items-center gap-3 pl-1.5 pr-6 py-1.5 bg-white border-[3px] border-black rounded-full font-black uppercase tracking-widest text-xs transition-all hover:-translate-y-1 shadow-[4px_4px_0px_#34A853] active:shadow-none active:translate-y-1 active:translate-x-1"
         >
-          <span className="text-xl leading-none">🏷️</span>
-          {hasAnyDiscounts ? 'Manage Offers' : 'Add Discounts'}
+          <div className="w-10 h-10 bg-[#34A853] rounded-full flex items-center justify-center border-[2px] border-black shadow-inner">
+            <svg className="w-5 h-5 text-[#FBBC05]" fill="currentColor" viewBox="0 0 24 24" stroke="black" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+            </svg>
+          </div>
+          <span className="text-black">
+            {hasAnyDiscounts ? 'Manage Offers' : 'Add Discounts'}
+          </span>
         </button>
       </div>
 
@@ -263,8 +267,8 @@ const MenuManage = () => {
             <span className="font-black uppercase tracking-widest opacity-40">No items available in this category</span>
           </div>
         ) : (
-          /* ── Compact Vertical Grid ── */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 pb-8 items-stretch">
+          /* ── Optimized Spacing Grid ── */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 pb-8 items-stretch">
             {displayedItems.map((item) => {
               const isHovered = hoveredItemId === item.id;
               const catColor = activeCat?.color || '#000';
@@ -274,22 +278,22 @@ const MenuManage = () => {
               const finalPrice = hasDiscount ? Math.round(item.price * (1 - discountPercent / 100)) : item.price;
 
               return (
-                <div key={item.id} className="relative group h-[340px]">
+                <div key={item.id} className="relative group h-[430px]">
                   <div
                     onMouseEnter={() => setHoveredItemId(item.id)}
                     onMouseLeave={() => setHoveredItemId(null)}
                     style={{
-                      backgroundColor: tint,
+                      backgroundColor: 'white',
                       borderColor: '#000',
                       boxShadow: isHovered ? 'none' : `4px 4px 0px ${catColor}`,
                       transform: isHovered ? 'translate(2px,2px)' : 'none',
                     }}
-                    className="relative flex flex-col rounded-[20px] border-[2.5px] transition-all duration-200 overflow-hidden h-full"
+                    className="relative flex flex-col rounded-[20px] border-[2.5px] transition-all duration-200 h-full"
                   >
-                    {/* Dot grid overlay */}
+                    {/* Dynamic Colorful Dot Grid - Subtle & High Fidelity */}
                     <div
-                      className="absolute inset-0 pointer-events-none z-0 opacity-[0.06]"
-                      style={{ backgroundImage: 'radial-gradient(#000 1.2px, transparent 1.2px)', backgroundSize: '10px 10px' }}
+                      className="absolute inset-0 pointer-events-none z-0 opacity-[0.15]"
+                      style={{ backgroundImage: `radial-gradient(${catColor} 1.2px, transparent 1.2px)`, backgroundSize: '10px 10px' }}
                     />
 
                     {/* Decorative Glowing Blob */}
@@ -299,35 +303,42 @@ const MenuManage = () => {
                     />
 
                     {/* Top Image Section */}
-                    <div className="relative z-10 w-full h-[130px] border-b-[2.5px] shrink-0 bg-white border-black">
-                      {item.image ? (
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <svg className="w-8 h-8 opacity-15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                      )}
-
-                      {/* Price Badge Over Image */}
-                      <div className="absolute top-2.5 right-2.5 bg-white text-black font-black text-sm px-3 py-1.5 rounded-md border-[2.5px] border-black shadow-[3.5px_3.5px_0px_rgba(0,0,0,1)] leading-none tracking-widest z-20">
-                        {hasDiscount ? (
-                          <div className="flex items-center gap-1.5">
-                            <span className="line-through opacity-40 text-[10px]">₹{item.price}</span>
-                            <span>₹{finalPrice}</span>
-                          </div>
-                        ) : (
+                    {/* Extreme Corner Tags (Pinning to Card Edges) */}
+                    {/* Price Tag (Top Right - Fixed Positioning) */}
+                    <div className="absolute top-2 right-2 bg-white text-black font-black text-sm px-3 py-1.5 border-[2.5px] border-black shadow-[4px_4px_0px_black] leading-none tracking-widest z-30 rotate-3">
+                      {hasDiscount ? (
+                        <div className="flex items-center gap-1.5">
+                          <span className="line-through opacity-40 text-[10px]">₹{item.price}</span>
                           <span>₹{finalPrice}</span>
-                        )}
-                      </div>
-
-                      {/* Discount Badge */}
-                      {hasDiscount && (
-                        <div className="absolute top-2.5 left-2.5 bg-[#EA4335] text-white text-xs font-black uppercase tracking-widest px-2 py-1 rounded-md border-[2.5px] border-black shadow-[3.5px_3.5px_0px_rgba(0,0,0,1)] -rotate-3 z-20">
-                          {discountPercent}% OFF
                         </div>
+                      ) : (
+                        <span>₹{finalPrice}</span>
                       )}
+                    </div>
+
+                    {/* Discount Tag (Experiment 2: Compact White Ticket) */}
+                    {hasDiscount && (
+                      <div className="absolute top-2.5 left-2.5 bg-white text-black text-xs font-black uppercase tracking-widest px-2.5 py-1.5 border-[2.5px] border-[#EA4335] shadow-[3.5px_3.5px_0px_black] -rotate-3 z-30 flex items-center gap-2 group-hover:rotate-0 transition-all duration-300">
+                        {/* Punched Hole Detail */}
+                        <div className="w-2 h-2 rounded-full border-[1.5px] border-[#EA4335] bg-gray-50 flex-shrink-0 -ml-0.5"></div>
+                        <span className="text-xs leading-none">{discountPercent}% OFF</span>
+                      </div>
+                    )}
+
+                    {/* Integrated Image Section (Nested & Rounded) */}
+                    <div className="p-3 pb-0 shrink-0">
+                      <div className="relative w-full h-[180px] border-[2.5px] border-black rounded-2xl overflow-hidden bg-gray-50 group-hover:border-black transition-colors shadow-sm">
+                        {item.image ? (
+                          <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-500" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-[#f0f0f0]">
+                            <svg className="w-10 h-10 opacity-15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                        )}
+
+                      </div>
                     </div>
 
                     {/* Content Vertical Splitting */}
@@ -371,34 +382,35 @@ const MenuManage = () => {
                           </span>
                         </button>
 
-                        {/* Edit Button (Bottom Right) */}
-                        <div className="flex gap-1.5">
+                        {/* Actions (Bottom Right) */}
+                        <div className="flex gap-2.5">
+                          {/* Edit Button */}
                           <button
                             onPointerDown={() => setPressedBtnId(`edit-${item.id}`)}
                             onPointerUp={() => setPressedBtnId(null)}
                             onPointerLeave={() => setPressedBtnId(null)}
                             onClick={() => handleOpenItemModal(item)}
-                            className="w-10 h-10 rounded-full flex items-center justify-center bg-white border-[2.5px] border-black hover:-translate-y-0.5 active:translate-y-0 transition-all text-[#4285F4]"
+                            className="w-10 h-10 rounded-full flex items-center justify-center bg-white border-[2.5px] border-black hover:-translate-y-0.5 active:translate-y-0 transition-all text-[#4285F4] hover:shadow-[4px_4px_0px_#4285F4]"
                           >
                             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                               <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                             </svg>
                           </button>
+
+                          {/* Delete/Remove Button (New Position) */}
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleDeleteItem(item.id); }}
+                            className="w-10 h-10 rounded-full flex items-center justify-center bg-white border-[2.5px] border-black hover:-translate-y-0.5 active:translate-y-0 transition-all text-[#EA4335] hover:shadow-[4px_4px_0px_#EA4335]"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Item Delete Cross (Top-Right Corner) */}
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handleDeleteItem(item.id); }}
-                    className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-white border-[2px] border-black rounded-full hidden group-hover:flex items-center justify-center shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:bg-[#EA4335] hover:text-white text-[#EA4335] transition-all z-30"
-                  >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
                 </div>
               );
             })}

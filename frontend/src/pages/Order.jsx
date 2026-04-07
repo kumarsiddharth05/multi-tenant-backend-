@@ -159,7 +159,9 @@ const Order = () => {
                   </div>
                   <p className="text-gray-400 text-[10px] font-black uppercase tracking-[0.3em] bg-gray-100 w-fit px-2.5 py-1 rounded border-black/10 border mb-4">{item.category}</p>
                 </div>
-                <p className="text-[#34A853] font-black text-3xl italic drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">₹{item.price}</p>
+                <div className="bg-[#34A853] text-white font-black text-2xl px-4 py-2 border-[3.5px] border-black shadow-[4.5px_4.5px_0px_black] rotate-2 italic shrink-0">
+                  ₹{item.price}
+                </div>
               </div>
               
               {item.description && <p className="text-black text-xs leading-relaxed font-black uppercase tracking-widest mb-8 border-l-[3px] border-black/10 pl-4">{item.description}</p>}

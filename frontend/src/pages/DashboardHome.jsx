@@ -11,12 +11,10 @@ import { NeoBadge } from '../components/ui/NeoBadge';
 const AreaTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <NeoCard padding="px-5 py-4" shadowColor="#34A853" className="z-50 bg-white">
-        <p className="text-[10px] font-black text-black opacity-50 uppercase tracking-widest mb-1">{label}</p>
-        <p className="text-2xl font-black text-black">₹{payload[0].value.toLocaleString()}</p>
-        <div className="flex items-center gap-1.5 mt-1">
-          <div className="w-2 h-2 rounded-full bg-[#34A853]"></div>
-          <p className="text-[10px] font-bold text-[#34A853] uppercase tracking-widest">Revenue</p>
+      <NeoCard padding="px-4 py-3" shadowColor="#6366F1" className="z-50 bg-white border-[2.5px] border-black">
+        <div className="flex flex-col gap-0.5">
+          <p className="text-[10px] font-black text-black uppercase tracking-widest leading-tight">{label}</p>
+          <p className="text-xl font-black text-black leading-tight">₹{payload[0].value.toLocaleString()}</p>
         </div>
       </NeoCard>
     );
@@ -31,7 +29,7 @@ const CustomDot = (props) => {
   return (
     <g>
       <circle cx={cx} cy={cy} r={6} fill="white" stroke="black" strokeWidth={3} />
-      <circle cx={cx} cy={cy} r={3} fill="#34A853" />
+      <circle cx={cx} cy={cy} r={3} fill="#6366F1" />
     </g>
   );
 };
@@ -232,10 +230,10 @@ const DashboardHome = () => {
 
         {/* ── Metric Cards ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <MetricCard label={`${period === 'Today' ? "Today's" : period} Revenue`} value={currentData.revenue} color="#34A853" bg="#F0FDF4" icon={<DollarIcon />} />
-          <MetricCard label={`${period === 'Today' ? "Today's" : period} Orders`} value={currentData.orders} color="#4285F4" bg="#EFF6FF" icon={<BoxIcon />} />
-          <MetricCard label="Active Orders" value={activeOrders} color="#F97316" bg="#FFF7ED" icon={<ActivityIcon />} />
-          <MetricCard label="Occupancy" value={tablesOccupancy} color="#EA4335" bg="#FEF2F2" icon={<UsersIcon />} />
+          <MetricCard label={`${period === 'Today' ? "Today's" : period} Revenue`} value={currentData.revenue} color="#34A853" bg="white" icon={<DollarIcon />} />
+          <MetricCard label={`${period === 'Today' ? "Today's" : period} Orders`} value={currentData.orders} color="#4285F4" bg="white" icon={<BoxIcon />} />
+          <MetricCard label="Active Orders" value={activeOrders} color="#F97316" bg="white" icon={<ActivityIcon />} />
+          <MetricCard label="Occupancy" value={tablesOccupancy} color="#EA4335" bg="white" icon={<UsersIcon />} />
         </div>
 
         {/* ── Chart + Top Items ── */}
@@ -243,55 +241,54 @@ const DashboardHome = () => {
 
           {/* Chart Column */}
           <div className="lg:col-span-2">
-            <NeoCard padding="p-6 sm:p-10" shadowColor="#34A853" className="h-full flex flex-col gap-8 bg-[#F0FDF4] overflow-hidden relative group">
-              {/* Dot grid decoration matching the theme */}
+            <NeoCard padding="p-6 sm:p-8" shadowColor="#6366F1" className="h-full flex flex-col gap-6 bg-white overflow-hidden relative group" style={{ borderColor: '#6366F1' }}>
+              {/* Dot grid decoration - Subtler & High Fidelity */}
               <div
-                className="absolute inset-0 pointer-events-none opacity-20"
+                className="absolute inset-0 pointer-events-none opacity-[0.20]"
                 style={{
-                  backgroundImage: 'radial-gradient(#34A853 1.2px, transparent 1.2px)',
-                  backgroundSize: '16px 16px',
+                  backgroundImage: 'radial-gradient(#6366F1 1.2px, transparent 1.2px)',
+                  backgroundSize: '12px 12px',
                 }}
               />
               {/* Decorative Bloom (Blob) */}
               <div
-                className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full blur-[100px] opacity-20 pointer-events-none transition-all duration-700 group-hover:scale-110"
-                style={{ backgroundColor: '#34A853' }}
+                className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full blur-[80px] opacity-25 pointer-events-none transition-all duration-700 group-hover:scale-110"
+                style={{ backgroundColor: '#6366F1' }}
               />
 
-              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <h3 className="font-black text-2xl uppercase tracking-tighter leading-none text-black">{period === 'Today' ? "Today's" : period} Revenue</h3>
-                  <div className="flex items-center gap-3 mt-2">
-                    <div className="w-2 h-2 rounded-full bg-[#EA4335] animate-pulse"></div>
-                    <p className="text-black font-black text-[10px] uppercase tracking-[0.2em]">Live Performance Data</p>
-                  </div>
+                  <h3 className="font-black text-xl uppercase tracking-tighter leading-none text-black">{period === 'Today' ? "Today's" : period} Revenue</h3>
                 </div>
 
-                <div className="bg-white border-[3px] border-black rounded-full px-5 py-2 font-black text-black uppercase tracking-widest text-xs shadow-[4px_4px_0px_#34A853]">
-                  Total: {currentData.revenue}
+                <div className="bg-white border-[3px] border-black rounded-full px-4 py-1.5 font-black text-black uppercase tracking-widest text-[10px] shadow-[3px_3px_0px_#6366F1]">
+                  TOTAL: {currentData.revenue}
                 </div>
               </div>
 
-              <div className="relative z-10 grid grid-cols-3 gap-4">
+              <div className="relative z-10 flex flex-wrap gap-3">
                 {[
-                  { label: 'Total Orders', value: currentData.orders, color: '#4285F4', bg: '#EFF6FF' },
-                  { label: 'Peak Revenue', value: `₹${Math.max(...currentData.chartData.map(d => d.value)).toLocaleString()}`, color: '#34A853', bg: '#F0FDF4' },
-                  { label: 'Avg / Transaction', value: `₹${Math.round(currentData.chartData.reduce((s, d) => s + d.value, 0) / (currentData.chartData.filter(d => d.value > 0).length || 1)).toLocaleString()}`, color: '#F97316', bg: '#FFF7ED' },
+                  { label: 'Total Orders', value: currentData.orders, color: '#6366F1' },
+                  { label: 'Peak Revenue', value: `₹${Math.max(...currentData.chartData.map(d => d.value)).toLocaleString()}`, color: '#6366F1' },
+                  { label: 'Avg / Trans', value: `₹${Math.round(currentData.chartData.reduce((s, d) => s + d.value, 0) / (currentData.chartData.filter(d => d.value > 0).length || 1)).toLocaleString()}`, color: '#6366F1' },
                 ].map((s, i) => (
-                  <div key={i} className="border-[3px] border-black rounded-[24px] p-4 bg-white/60 backdrop-blur-sm group transition-all hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_black] active:translate-y-0 active:shadow-none">
-                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-black mb-2">{s.label}</p>
-                    <p className="font-black text-xl text-black leading-none">{s.value}</p>
+                  <div 
+                    key={i} 
+                    className="flex flex-col border-[2.5px] border-black rounded-full px-7 py-2.5 bg-white transition-all duration-200 hover:-translate-y-1 shadow-[4px_4px_0px_0px_#6366F1] hover:shadow-[6px_6px_0px_0px_#6366F1] active:translate-y-0 active:shadow-none cursor-default group"
+                  >
+                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-black leading-none mb-1">{s.label}</p>
+                    <p className="font-black text-base text-black leading-none">{s.value}</p>
                   </div>
                 ))}
               </div>
 
-              <div className="relative z-10 h-[250px] w-full -mx-4">
+              <div className="relative z-10 h-[220px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={currentData.chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                     <defs>
                       <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#34A853" stopOpacity={0.2} />
-                        <stop offset="95%" stopColor="#34A853" stopOpacity={0} />
+                        <stop offset="5%" stopColor="#6366F1" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#6366F1" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="8 8" stroke="#000" strokeOpacity={0.05} vertical={false} />
@@ -313,11 +310,11 @@ const DashboardHome = () => {
                     <Area
                       type="monotone"
                       dataKey="value"
-                      stroke="#34A853"
+                      stroke="#6366F1"
                       strokeWidth={4}
                       fill="url(#revenueGradient)"
                       dot={<CustomDot />}
-                      activeDot={{ r: 8, fill: '#34A853', stroke: 'black', strokeWidth: 3 }}
+                      activeDot={{ r: 8, fill: '#6366F1', stroke: 'black', strokeWidth: 3 }}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -325,24 +322,24 @@ const DashboardHome = () => {
             </NeoCard>
           </div>
 
-          <NeoCard padding="p-6 sm:p-10" shadowColor="#4285F4" className="h-full flex flex-col gap-6 bg-[#EFF6FF] overflow-hidden relative group">
-            {/* Dot grid decoration */}
+          <NeoCard padding="p-6 sm:p-8" shadowColor="#EA4335" className="h-full flex flex-col gap-4 bg-white overflow-hidden relative group" style={{ borderColor: '#EA4335' }}>
+            {/* Dynamic Colorful Dot Grid - Subtler & High Fidelity */}
             <div
-              className="absolute inset-0 pointer-events-none opacity-20"
+              className="absolute inset-0 pointer-events-none opacity-[0.20]"
               style={{
-                backgroundImage: 'radial-gradient(#4285F4 1.2px, transparent 1.2px)',
-                backgroundSize: '16px 16px',
+                backgroundImage: 'radial-gradient(#EA4335 1.2px, transparent 1.2px)',
+                backgroundSize: '12px 12px',
               }}
             />
             {/* Bloom effect */}
             <div
-              className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full blur-[100px] opacity-20 pointer-events-none"
-              style={{ backgroundColor: '#4285F4' }}
+              className="absolute -right-16 -bottom-16 w-64 h-64 rounded-full blur-[80px] opacity-25 pointer-events-none"
+              style={{ backgroundColor: '#EA4335' }}
             />
 
-            <div className="relative z-10 flex justify-between items-center mb-2">
-              <h3 className="font-black text-2xl uppercase tracking-tighter">Trending</h3>
-              <div className="w-10 h-10 bg-black border-[2px] border-black rounded-full flex items-center justify-center text-white shadow-[3px_3px_0px_#34A853]">
+            <div className="relative z-10 flex justify-between items-center mb-0.5">
+              <h3 className="font-black text-xl uppercase tracking-tighter text-black">Trending</h3>
+              <div className="w-10 h-10 bg-black border-[2px] border-black rounded-full flex items-center justify-center text-white shadow-[3px_3px_0px_#EA4335]">
                 <style>{`
                 @keyframes trendingMove {
                   0%, 100% { transform: translate(0, 0); }
@@ -369,23 +366,23 @@ const DashboardHome = () => {
               </div>
             </div>
 
-            <div className="relative z-10 space-y-4 flex-1 overflow-y-auto pr-2 custom-scrollbar max-h-[520px]">
+            <div className="relative z-10 space-y-3 flex-1 overflow-y-auto pr-2 custom-scrollbar max-h-[350px]">
               {topItems.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-4 bg-white border-[3px] border-black rounded-[24px] px-5 py-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-[5px_5px_0px_0px_black] group cursor-default shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]"
+                  className="flex items-center gap-3 bg-white border-[2.5px] border-black rounded-full px-5 py-2.5 transition-all duration-200 hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_black] group cursor-default shadow-[3px_3px_0px_0px_rgba(0,0,0,0.05)]"
                 >
                   <div
-                    className="w-10 h-10 flex items-center justify-center text-black font-black text-sm border-[3px] border-black rounded-full shrink-0 shadow-sm"
-                    style={{ backgroundColor: item.bg, borderColor: item.color }}
+                    className="w-9 h-9 flex items-center justify-center text-white font-black text-sm border-[2.5px] border-black rounded-full shrink-0 shadow-sm"
+                    style={{ backgroundColor: item.color }}
                   >
                     {item.rank}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-black text-base text-black truncate tracking-tight">{item.name}</h4>
-                    <p className="text-[10px] font-black text-black uppercase tracking-[0.2em] mt-1">{item.sold} items sold</p>
+                    <h4 className="font-black text-sm text-black truncate tracking-tight">{item.name}</h4>
+                    <p className="text-[9px] font-black text-black uppercase tracking-[0.2em] mt-0.5">{item.sold} items sold</p>
                   </div>
-                  <span className="font-black text-base text-black shrink-0">{item.revenue}</span>
+                  <span className="font-black text-sm text-black shrink-0">{item.revenue}</span>
                 </div>
               ))}
             </div>
@@ -403,37 +400,45 @@ const MetricCard = ({ label, value, color, bg, icon }) => (
     interactive
     shadowColor={color}
     bg={bg}
-    padding="p-6"
-    className="min-h-[140px] flex flex-col justify-between overflow-hidden relative group"
+    padding="px-6 py-5"
+    className="min-h-[135px] flex flex-col justify-center overflow-hidden relative group"
     style={{ borderColor: color }}
   >
-    {/* Dot grid decoration */}
+    {/* Dynamic Colorful Dot Grid - High Fidelity & Clearer Visibility */}
     <div
-      className="absolute inset-0 pointer-events-none opacity-10"
+      className="absolute inset-0 pointer-events-none opacity-[0.18]"
       style={{
-        backgroundImage: 'radial-gradient(#000 1.2px, transparent 1.2px)',
-        backgroundSize: '12px 12px',
+        backgroundImage: `radial-gradient(${color} 1px, transparent 1px)`,
+        backgroundSize: '10px 10px',
       }}
     />
 
-    {/* Decorative Ellipse (Blob) */}
+    {/* Modern Dynamic Icon - Top Right Corner */}
     <div
-      className="absolute -right-6 -bottom-6 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none transition-transform group-hover:scale-150 duration-500"
-      style={{ backgroundColor: color }}
-    />
-
-    <div
-      className="relative z-10 w-10 h-10 border-[3px] rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
-      style={{ backgroundColor: 'white', borderColor: color, boxShadow: `3px 3px 0px 0px ${color}` }}
+      className="absolute top-5 right-5 z-20 w-11 h-11 border-[3px] rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3"
+      style={{ 
+        backgroundColor: 'white', 
+        borderColor: color, 
+        boxShadow: `4px 4px 0px 0px ${color}` 
+      }}
     >
-      <div className="scale-75">
+      <div className="scale-[0.85] text-black">
         {icon}
       </div>
     </div>
 
-    <div className="relative z-10 mt-4">
-      <p className="text-[9px] font-black uppercase text-black mb-1 tracking-[0.2em]">{label}</p>
-      <h3 className="text-3xl font-black text-black tracking-tighter leading-none">{value}</h3>
+    {/* Decorative Ellipse for Visual Depth */}
+    <div
+      className="absolute -right-4 -bottom-4 w-32 h-32 rounded-full blur-3xl opacity-20 pointer-events-none transition-transform group-hover:scale-125 duration-700"
+      style={{ backgroundColor: color }}
+    />
+
+    {/* Primary Text Content */}
+    <div className="relative z-10 space-y-1.5 mt-2">
+      <div className="inline-block px-2.5 py-1.5 bg-black/5 backdrop-blur-sm border-l-[3.5px] border-black mb-1">
+        <p className="text-xs font-black uppercase text-black tracking-[0.25em] leading-none">{label}</p>
+      </div>
+      <h3 className="text-5xl font-black text-black tracking-tighter leading-none pr-10">{value}</h3>
     </div>
   </NeoCard>
 );

@@ -88,8 +88,8 @@ const QRCodesManage = () => {
             className="relative flex items-center gap-3 p-1.5 font-black uppercase tracking-widest transition-all duration-150 border-[3px] border-black rounded-full group cursor-pointer shadow-[4px_4px_0px_0px_var(--btn-color)] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-[6px_6px_0px_0px_var(--btn-color)] active:translate-x-1 active:translate-y-1 active:shadow-none pr-5 text-black overflow-hidden"
           >
              <div 
-               className="relative z-10 w-12 h-12 border-[2px] border-inherit rounded-full flex items-center justify-center shrink-0 transition-colors text-black"
-               style={{ backgroundColor: 'white' }}
+               className="relative z-10 w-12 h-12 border-[2.5px] border-inherit rounded-full flex items-center justify-center shrink-0 transition-colors text-white"
+               style={{ backgroundColor: '#A142F4' }}
              >
                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
              </div>

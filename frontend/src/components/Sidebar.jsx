@@ -150,13 +150,13 @@ const Sidebar = ({ isOpen, onClose }) => {
                   <>
                     {/* Icon circle */}
                     <div
-                      className="relative z-10 w-10 h-10 border-[2px] rounded-full flex items-center justify-center shrink-0 transition-all duration-200 text-black shadow-inner"
+                      className="relative z-10 w-10 h-10 border-[2.5px] rounded-full flex items-center justify-center shrink-0 transition-all duration-200 text-white"
                       style={{
-                        borderColor: isActive ? link.color : '#000',
-                        backgroundColor: isActive ? '#FFF' : link.bgTint,
+                        borderColor: '#000',
+                        backgroundColor: link.color,
                       }}
                     >
-                      <div className="w-4 h-4 flex-shrink-0">
+                      <div className="w-5 h-5 flex-shrink-0">
                         {link.icon}
                       </div>
                     </div>
@@ -176,8 +176,8 @@ const Sidebar = ({ isOpen, onClose }) => {
               style={{ '--btn-color': '#EA4335' }}
               className="w-full relative flex items-center gap-3 p-1.5 bg-white text-black font-black uppercase tracking-widest transition-all duration-200 border-[3px] border-black rounded-full group cursor-pointer overflow-hidden shadow-[4px_4px_0px_0px_var(--btn-color)] hover:-translate-y-1 active:translate-x-1 active:translate-y-1 active:shadow-none active:border-[#EA4335] active:bg-[#FEF2F2]"
             >
-              <div className="relative z-10 w-10 h-10 border-[2px] border-[#EA4335] rounded-full flex items-center justify-center shrink-0 bg-[#FEF2F2] group-active:bg-white transition-all duration-200 text-black">
-                <div className="w-4 h-4 flex-shrink-0">
+              <div className="relative z-10 w-10 h-10 border-[2.5px] border-black rounded-full flex items-center justify-center shrink-0 bg-[#EA4335] text-white transition-all duration-200">
+                <div className="w-5 h-5 flex-shrink-0">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 21H5V5h4" />
                     <polyline points="16 17 21 12 16 7" />

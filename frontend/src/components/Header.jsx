@@ -44,19 +44,6 @@ const Header = ({ onMenuClick }) => {
       </div>
 
       <div className="flex items-center gap-6">
-        {/* Live Menu Preview Link */}
-        {user?.tenantKey && (
-          <a
-            href={`/${user.tenantKey}/table/DEMO-1`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-[#FBBC05] border-[2px] border-black text-black font-black text-[10px] uppercase tracking-widest shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all rounded-full hidden sm:flex"
-            title="View Your Public Digital Menu"
-          >
-            <span className="text-sm">🍽️</span>
-            <span>Live Menu</span>
-          </a>
-        )}
 
         {/* Mobile Hamburger */}
         <button
